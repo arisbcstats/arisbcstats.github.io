@@ -390,6 +390,7 @@ thead th:last-child{border-top-right-radius:8px}
 .ld-item:hover,.ld-item:focus-visible{background:rgba(242,194,0,.14);border-color:var(--gold);outline:none}
 .ld-av{flex:0 0 38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--band-line);color:var(--band-ink);border:2px solid var(--band-ink)}
 .ld-item:first-of-type .ld-av{background:var(--gold);color:var(--gold-ink);border-color:var(--gold)}
+.ld-av.js{background:none;border:0;border-radius:0;flex:0 0 40px;height:46px}.ld-av.js svg{width:40px;height:46px;display:block}.ld-item:first-of-type .ld-av.js{background:none}
 .ld-n{flex:1;min-width:0;font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ld-n small{display:block;font-weight:500;font-size:11.5px;color:var(--band-muted)}
 .ld-v{font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
@@ -711,6 +712,8 @@ thead th:last-child{border-top-right-radius:8px}
   const tsHTML = v => v==null ? '<span class="dim">–</span>' : '<span class="'+(v>=.6?'pos':v<.52?'neg':'')+'">'+nf(v*100,0)+'%</span>';
   const compName = {EC:'EuroCup',GBL:'Stoiximan GBL'};
   const won = g => g.ptsFor>g.ptsAgainst;
+  const miniJersey = no => { let st=''; for(let x=15;x<110;x+=20) st+='<rect x="'+x+'" y="0" width="10" height="140" fill="#16150f"/>'; const P='M38 8 Q60 18 82 8 L104 18 L118 44 L100 54 L96 46 L96 134 L24 134 L24 46 L20 54 L2 44 L16 18 Z';
+    return '<svg viewBox="0 0 120 140"><g clip-path="path(\''+P+'\')"><rect width="120" height="140" fill="#f2c200"/>'+st+'</g><path d="'+P+'" fill="none" stroke="#f6f3e8" stroke-width="4"/><rect x="28" y="40" width="64" height="58" rx="7" fill="#16150f"/><text x="60" y="88" text-anchor="middle" font-family="Fira Sans Extra Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="'+(String(no).length>1?50:56)+'" fill="#f2c200">'+esc(String(no))+'</text></svg>'; };
 
   document.getElementById('season').textContent = D.season;
   document.getElementById('updated').textContent = 'Ενημέρωση: '+dlong(D.updated)+' · '+games.length+' επίσημοι αγώνες';
@@ -1491,7 +1494,7 @@ thead th:last-child{border-top-right-radius:8px}
       const minGp=Math.max(1,Math.ceil(list.length*0.4));
       const rows=agg(list).filter(r=>r.gp>=minGp);
       const col_=(t,key,d)=>{const top=rows.slice().sort((a,b)=>b[key]-a[key]).slice(0,3);
-        return '<div class="ld-col"><h3>'+t+'</h3>'+top.map(r=>'<button class="ld-item" data-p="'+esc(r.name)+'"><span class="ld-av" aria-hidden="true">'+esc(ini(r.name))+'</span><span class="ld-n">'+esc(r.name)+'<small>'+r.gp+(r.gp===1?' αγώνας':' αγώνες')+' · '+nf(r.mpg,1)+'′</small></span><span class="ld-v">'+nf(r[key],d)+'</span></button>').join('')+'</div>';};
+        return '<div class="ld-col"><h3>'+t+'</h3>'+top.map(r=>'<button class="ld-item" data-p="'+esc(r.name)+'">'+(((D.bio||{})[r.name]||{}).no!=null?'<span class="ld-av js" aria-hidden="true">'+miniJersey(D.bio[r.name].no)+'</span>':'<span class="ld-av" aria-hidden="true">'+esc(ini(r.name))+'</span>')+'<span class="ld-n">'+esc(r.name)+'<small>'+r.gp+(r.gp===1?' αγώνας':' αγώνες')+' · '+nf(r.mpg,1)+'′</small></span><span class="ld-v">'+nf(r[key],d)+'</span></button>').join('')+'</div>';};
       document.getElementById('ld-grid').innerHTML=list.length?col_('PIR','avg',1)+col_('Πόντοι','ppg',1)+col_('Ριμπάουντ','rpg',1)+col_('Ασίστ','apg',1):'<p class="hint">Κανένας αγώνας ακόμα.</p>';
       document.getElementById('ld-note').textContent='Μέσοι όροι ανά αγώνα'+(lc==='ALL'?' σε EuroCup και GBL':' στη '+compName[lc])+' · παίκτες με '+minGp+'+ συμμετοχές από '+list.length+'. Πάτησε σε παίκτη για την καρτέλα του.';
     }
