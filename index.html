@@ -293,6 +293,8 @@ main section.panel{scroll-margin-top:10px}
 .grp-k.t1{background:var(--gold);color:var(--gold-ink)}.grp-k.t3{background:#3a3524;color:var(--gold)}
 .h2h{margin-top:6px;display:flex;flex-direction:column;gap:3px;font-size:13px}
 
+:root,:root[data-theme]{--bg:#0f0f0d!important;--panel:#1a1915!important;--ink:#f3efe2!important;--muted:#9d998a!important;--line:#2a2822!important;--band:#000!important;--band-ink:#f6f3e8!important;--band-muted:#bdb9a8!important;--band-line:#3a382f!important;--gold:#f2c200!important;--gold-ink:#16150f!important;--chip:#29271f!important;--s30:#13915a!important;--s20:#35a656!important;--s15:#7fae3f!important;--s10:#b8961a!important;--s5:#c66f26!important;--s0:#b94a35!important;--sneg:#962a2a!important;--cell-ink:#fff!important;--good:#5cc06f!important;--bad:#ef7b6b!important;color-scheme:dark!important}
+html,body{background:#0f0f0d!important}
 .nx-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .view{display:flex;flex-direction:column;gap:20px}
 .viewtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--band);border-radius:14px;padding:5px}
@@ -1249,12 +1251,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     const det=[s.label,s.tv?'TV: '+s.tv:null,'Στατιστικά: https://arisbcstats.github.io'].filter(Boolean).join('\n');
     const g='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+z(t)+'/'+z(t+2*3600e3)+'&details='+encodeURIComponent(det)+(s.venue?'&location='+encodeURIComponent(s.venue):'');
     const ics=/github\.io$/.test(location.hostname)?'<button type="button" class="cal-a cal-ics" data-t="'+t+'" data-title="'+esc(title)+'" data-det="'+esc(det)+'" data-loc="'+esc(s.venue||'')+'">'+(compact?'.ics':'📅 iPhone/άλλο')+'</button>':'';
-    if(/Android/i.test(navigator.userAgent)){
-      const enc=s=>encodeURIComponent(s).replace(/;/g,'%3B');
-      const it='intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event;S.title='+enc(title)+';l.beginTime='+t+';l.endTime='+(t+7200e3)+(s.venue?';S.eventLocation='+enc(s.venue):'')+';S.description='+enc(det)+';S.browser_fallback_url='+encodeURIComponent(g)+';end';
-      return '<div class="cal-btns"><a class="cal-a" href="'+it+'">'+(compact?'+ Ημερολόγιο':'📅 Βάλ\' το στο ημερολόγιο')+'</a><a class="cal-a" target="_blank" rel="noopener" href="'+g+'">Google</a></div>';
-    }
-    return '<div class="cal-btns"><a class="cal-a" target="_blank" rel="noopener" href="'+g+'">'+(compact?'+ Ημερολόγιο':'📅 Βάλ\' το στο ημερολόγιο')+'</a>'+(/iPhone|iPad|Mac/i.test(navigator.userAgent)?'':'')+ics+'</div>';
+    return '<div class="cal-btns"><a class="cal-a" target="_blank" rel="noopener" href="'+g+'">'+(compact?'+ Ημερολόγιο':'📅 Βάλ\' το στο ημερολόγιο')+'</a>'+ics+'</div>';
   }
   document.addEventListener('click',e=>{const b=e.target.closest('.cal-ics'); if(!b) return;
     const z=d=>new Date(d).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''), t=+b.dataset.t, esc2=s=>s.replace(/[\\,;]/g,m=>'\\'+m).replace(/\n/g,'\\n');
