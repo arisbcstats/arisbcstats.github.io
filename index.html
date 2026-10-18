@@ -253,6 +253,7 @@ body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 .sgrid button{background:transparent!important;border:1.5px solid rgba(242,194,0,.35)!important}.sgrid button:active{background:rgba(242,194,0,.12)!important}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
 
+main section.panel{scroll-margin-top:10px}
 .nx-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .view{display:flex;flex-direction:column;gap:20px}
 .viewtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--band);border-radius:14px;padding:5px}
@@ -1576,7 +1577,9 @@ thead th:last-child{border-top-right-radius:8px}
     const sheet=document.getElementById('sheet'), bg=document.getElementById('sheet-bg');
     const close=()=>{sheet.hidden=true; bg.hidden=true;};
     const go=(v,s)=>{ window.__navStats=(v==='stats'&&!!s&&s!=='last-h'&&s!=='ld-h'); showView(v); close();
-      if(s){ const el=document.getElementById(s); if(el) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),30); } else window.scrollTo({top:0,behavior:'smooth'}); };
+      const sec=s?document.getElementById(s):null, tgt=sec?(sec.closest('section')||sec):null;
+      const jump=()=>{ if(tgt) tgt.scrollIntoView({block:'start'}); else { window.scrollTo(0,0); document.body.scrollIntoView({block:'start'}); } };
+      requestAnimationFrame(()=>requestAnimationFrame(jump)); setTimeout(jump,450); };
     document.getElementById('bnav').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; const g=b.dataset.go;
       if(g==='menu'){ sheet.hidden=false; bg.hidden=false; sheet.querySelector('button').focus(); return; }
       if(g==='home') go('stats'); else if(g==='stats') go('stats','sum-h'); else go(g); });
