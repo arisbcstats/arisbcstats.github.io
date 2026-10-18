@@ -254,6 +254,7 @@ body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
 
 main section.panel{scroll-margin-top:10px}
+#next-sec.offview{display:none!important}
 .nx-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .view{display:flex;flex-direction:column;gap:20px}
 .viewtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--band);border-radius:14px;padding:5px}
@@ -1568,6 +1569,7 @@ thead th:last-child{border-top-right-radius:8px}
   // ===== views & schedule calendar =====
   function showView(v,scroll){
     ['stats','anal','sched','stand','player'].forEach(k=>{document.getElementById('view-'+k).hidden = v!==k;});
+    document.getElementById('next-sec').classList.toggle('offview', v!=='stats');
     document.querySelectorAll('#viewtabs .vt').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.v===v)));
     if(scroll) window.scrollTo({top:0,behavior:'smooth'});
     document.querySelectorAll('#bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(v==='stats'?(window.__navStats?'stats':'home'):v==='player'?'stats':v==='stand'?'menu':v)));
