@@ -1249,7 +1249,12 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     const det=[s.label,s.tv?'TV: '+s.tv:null,'Στατιστικά: https://arisbcstats.github.io'].filter(Boolean).join('\n');
     const g='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+z(t)+'/'+z(t+2*3600e3)+'&details='+encodeURIComponent(det)+(s.venue?'&location='+encodeURIComponent(s.venue):'');
     const ics=/github\.io$/.test(location.hostname)?'<button type="button" class="cal-a cal-ics" data-t="'+t+'" data-title="'+esc(title)+'" data-det="'+esc(det)+'" data-loc="'+esc(s.venue||'')+'">'+(compact?'.ics':'📅 iPhone/άλλο')+'</button>':'';
-    return '<div class="cal-btns"><a class="cal-a" target="_blank" rel="noopener" href="'+g+'">'+(compact?'+ Ημερολόγιο':'📅 Βάλ\' το στο ημερολόγιο')+'</a>'+ics+'</div>';
+    if(/Android/i.test(navigator.userAgent)){
+      const enc=s=>encodeURIComponent(s).replace(/;/g,'%3B');
+      const it='intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event;S.title='+enc(title)+';l.beginTime='+t+';l.endTime='+(t+7200e3)+(s.venue?';S.eventLocation='+enc(s.venue):'')+';S.description='+enc(det)+';S.browser_fallback_url='+encodeURIComponent(g)+';end';
+      return '<div class="cal-btns"><a class="cal-a" href="'+it+'">'+(compact?'+ Ημερολόγιο':'📅 Βάλ\' το στο ημερολόγιο')+'</a><a class="cal-a" target="_blank" rel="noopener" href="'+g+'">Google</a></div>';
+    }
+    return '<div class="cal-btns"><a class="cal-a" target="_blank" rel="noopener" href="'+g+'">'+(compact?'+ Ημερολόγιο':'📅 Βάλ\' το στο ημερολόγιο')+'</a>'+(/iPhone|iPad|Mac/i.test(navigator.userAgent)?'':'')+ics+'</div>';
   }
   document.addEventListener('click',e=>{const b=e.target.closest('.cal-ics'); if(!b) return;
     const z=d=>new Date(d).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''), t=+b.dataset.t, esc2=s=>s.replace(/[\\,;]/g,m=>'\\'+m).replace(/\n/g,'\\n');
