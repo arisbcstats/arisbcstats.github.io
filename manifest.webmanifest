@@ -1,0 +1,2 @@
+{"name":"Aris BC Stats","short_name":"Aris BC Stats","description":"Στατιστικά, πρόγραμμα και βαθμολογίες του Άρη στο μπάσκετ (EuroCup & Stoiximan GBL)","lang":"el","start_url":"./","scope":"./","display":"standalone","orientation":"portrait","background_color":"#16150f","theme_color":"#16150f",
+"icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"icons/maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
