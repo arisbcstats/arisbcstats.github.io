@@ -224,6 +224,7 @@ footer a,.hint a{color:inherit}
 .appdl{display:inline-flex;flex-direction:column;align-self:center;background:var(--gold);color:var(--gold-ink);font-weight:800;text-decoration:none;border-radius:12px;padding:9px 16px;font-size:15px;line-height:1.2}.appdl small{font-weight:600;font-size:11.5px;opacity:.8}.appdl:focus-visible{outline:3px solid var(--band-ink);outline-offset:2px}
 .pl-id{display:flex;gap:14px;align-items:center;min-width:0}.pl-jersey{flex:0 0 auto;width:78px}.pl-jersey svg{display:block;width:100%;height:auto}
 #pl-career .gl-table td.cl{text-align:left;white-space:nowrap}#pl-career tr.cur td{background:color-mix(in srgb,var(--gold) 14%,var(--panel));font-weight:700}
+.cmp-j{display:block;width:40px;height:46px;margin:2px auto 4px}.cmp-j svg{width:40px;height:46px;display:block}
 .nx-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .view{display:flex;flex-direction:column;gap:20px}
 .viewtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--band);border-radius:14px;padding:5px}
@@ -1301,7 +1302,8 @@ thead th:last-child{border-top-right-radius:8px}
         ['Φάουλ',num('pf'),fmN(),-1],
         ['Κερδισμένα φάουλ',num('fd'),fmN(),1],
       ];
-      const head='<thead><tr><th scope="col">'+esc(shortName(A))+'</th><th scope="col"></th><th scope="col">'+esc(shortName(B))+'</th></tr></thead>';
+      const jh=n=>{const no=((D.bio||{})[n]||{}).no; return (no!=null?'<span class="cmp-j" aria-hidden="true">'+miniJersey(no)+'</span>':'')+esc(shortName(n));};
+      const head='<thead><tr><th scope="col">'+jh(A)+'</th><th scope="col"></th><th scope="col">'+jh(B)+'</th></tr></thead>';
       if(isG&&(!a||!b)){
         const miss=[!a?A:null,!b?B:null].filter(Boolean).map(esc).join(' και ');
         t.innerHTML=head+'<tbody><tr><td colspan="3" class="dim" style="white-space:normal">'+miss+(miss.includes(' και ')?' δεν αγωνίστηκαν':' δεν αγωνίστηκε')+' σε αυτόν τον αγώνα.</td></tr></tbody>';
