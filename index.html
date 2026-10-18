@@ -1203,7 +1203,7 @@ thead th:last-child{border-top-right-radius:8px}
       const zone=s=>s.t===3?(Math.abs(s.x)>=600&&s.y<=150?'c3':'a3'):(Math.hypot(s.x,s.y)<=250?'rim':'mid');
       const Z=[['rim','Κοντά στο καλάθι','έως 2,5 μ.'],['mid','Μέση απόσταση','δίποντα πέρα από 2,5 μ.'],['c3','Τρίποντα από κόρνερ',''],['a3','Τρίποντα (υπόλοιπα)','']];
       const tot=sh.length, mk=sh.filter(s=>s.m).length;
-      document.getElementById('sc-zones').innerHTML='<div class="zn-r" style="background:var(--chip)"><span><strong>Σύνολο</strong><br><small>'+(psel==='ALL'?'Όλη η ομάδα':esc(psel))+'</small></span><span>'+mk+'/'+tot+'</span><b>'+(tot?Math.round(mk/tot*100)+'%':'–')+'</b></div>'+
+      document.getElementById('sc-zones').innerHTML='<div class="zn-r" style="background:var(--chip)'+(psel!=='ALL'&&((D.bio||{})[psel]||{}).no!=null?';grid-template-columns:auto 1fr auto auto':'')+'">'+(psel!=='ALL'&&((D.bio||{})[psel]||{}).no!=null?'<span class="cmp-j" style="margin:0" aria-hidden="true">'+miniJersey(D.bio[psel].no)+'</span>':'')+'<span><strong>Σύνολο</strong><br><small>'+(psel==='ALL'?'Όλη η ομάδα':esc(psel))+'</small></span><span>'+mk+'/'+tot+'</span><b>'+(tot?Math.round(mk/tot*100)+'%':'–')+'</b></div>'+
         Z.map(([k,l,h])=>{const z=sh.filter(s=>zone(s)===k), m=z.filter(s=>s.m).length; return '<div class="zn-r"><span>'+l+(h?'<br><small>'+h+'</small>':'')+'</span><span>'+m+'/'+z.length+'</span><b>'+(z.length?Math.round(m/z.length*100)+'%':'–')+'</b></div>';}).join('');
     }
     selG.addEventListener('change',()=>{gsel=selG.value; render();});
