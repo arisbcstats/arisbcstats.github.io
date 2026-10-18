@@ -306,6 +306,13 @@ html,body{background:#0f0f0d!important}
 .pc-k.on em{color:var(--gold)}
 
 .more-f summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--gold);padding:4px 0;list-style:none}.more-f summary::-webkit-details-marker{display:none}.more-f summary::before{content:'▸ '}.more-f[open] summary::before{content:'▾ '}.more-in{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.agrid button{font:inherit;color:var(--ink);text-align:left;background:transparent;border:1.5px solid rgba(242,194,0,.35);border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;gap:4px;cursor:pointer;min-height:118px}
+.agrid button:active{background:rgba(242,194,0,.1)}.agrid button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.agrid svg{width:32px;height:32px;fill:none;stroke:var(--gold);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px}
+.agrid b{font-size:14.5px;line-height:1.2}.agrid small{color:var(--muted);font-size:12px;line-height:1.3}
+.aback{position:sticky;top:6px;z-index:20}.aback button{font:inherit;font-weight:800;font-size:14px;background:var(--gold);color:var(--gold-ink);border:0;border-radius:14px;padding:10px 16px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+
 .nx-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .view{display:flex;flex-direction:column;gap:20px}
 .viewtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--band);border-radius:14px;padding:5px}
@@ -659,7 +666,9 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
   </div>
 
   <div class="view" id="view-anal" hidden>
-  <section class="panel" aria-labelledby="src-h">
+  <section class="panel" id="anal-home"><div class="panel-head"><h2 id="anal-h">Ανάλυση</h2></div><div class="agrid"><button type="button" data-a="src"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5H12z"/><path d="M14.5 2.8v6.7h6.7a6.7 6.7 0 0 0-6.7-6.7z"/></svg><b>Από πού έρχονται οι πόντοι</b><small>λάθη, αιφνιδιασμοί, ρακέτα, πάγκος</small></button><button type="button" data-a="fl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 19.5h17M4 15l4.5-5 3.5 3.5L19.5 6"/><path d="M15.5 6h4v4"/></svg><b>Ροή αγώνα</b><small>διαφορά σκορ λεπτό-λεπτό</small></button><button type="button" data-a="sc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 4h17v16h-17zM8 4v6.5h8V4"/><path d="M5.5 4v3.5a6.5 6.5 0 0 0 13 0V4"/><circle cx="12" cy="6" r="1.2"/></svg><b>Χάρτης σουτ</b><small>πού σουτάρει κάθε παίκτης</small></button><button type="button" data-a="as"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17" r="2.2"/><circle cx="18.5" cy="7" r="2.2"/><path d="M7.5 15.5C10 9 13 7.5 16 7.3"/><path d="M13.6 5.6l2.6 1.7-1.9 2.4"/></svg><b>Ποιος πασάρει σε ποιον</b><small>ζευγάρια ασίστ</small></button><button type="button" data-a="lu"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="6" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg><b>Πεντάδες</b><small>ποιες πεντάδες αποδίδουν</small></button><button type="button" data-a="cmp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M8 20h8M5 7h14M5 7l-2.5 6a2.5 2.5 0 0 0 5 0zM19 7l-2.5 6a2.5 2.5 0 0 0 5 0z"/></svg><b>Σύγκριση παικτών</b><small>δύο παίκτες δίπλα-δίπλα</small></button><button type="button" data-a="op"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8-7.5 9.5-4.3-1.5-7.5-4.9-7.5-9.5V6z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg><b>Ποιος μας «πόνεσε»</b><small>οι καλύτεροι αντίπαλοι</small></button></div></section>
+  <div class="aback" id="aback" hidden><button type="button">‹ Όλη η ανάλυση</button></div>
+  <section class="panel" data-asec="src" hidden aria-labelledby="src-h">
     <div class="panel-head"><h2 id="src-h">Από πού έρχονται οι πόντοι</h2></div>
     <div class="sel-row"><label class="sr-only" for="src-g">Αγώνας</label><select id="src-g" class="gsel on"></select></div>
     <div id="src-body"></div>
@@ -667,7 +676,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <p class="hint" style="margin-top:10px" id="src-note"></p>
   </section>
 
-  <section class="panel" aria-labelledby="fl-h">
+  <section class="panel" data-asec="fl" hidden aria-labelledby="fl-h">
     <div class="panel-head"><h2 id="fl-h">Ροή αγώνα</h2></div>
     <div class="sel-row"><label class="sr-only" for="fl-g">Αγώνας</label><select id="fl-g" class="gsel on"></select></div>
     <div id="fl-chips" class="fl-chips"></div>
@@ -675,13 +684,13 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <p class="hint" style="margin-top:8px">Η διαφορά στο σκορ σε όλη τη διάρκεια του αγώνα. Πάνω από τη γραμμή προηγείται ο Άρης (κίτρινο), κάτω ο αντίπαλος (κόκκινο). Από το επίσημο play-by-play.</p>
   </section>
 
-  <section class="panel" aria-labelledby="op-h">
+  <section class="panel" data-asec="op" hidden aria-labelledby="op-h">
     <div class="panel-head"><h2 id="op-h">Ποιος μας «πόνεσε»</h2></div>
     <div class="scroll"><table id="op-table"></table></div>
     <p class="hint" style="margin-top:10px">Ο κορυφαίος παίκτης του αντιπάλου σε PIR σε κάθε αγώνα, από το επίσημο box score. Από κάτω οι επόμενοι δύο.</p>
   </section>
 
-  <section class="panel" aria-labelledby="as-h">
+  <section class="panel" data-asec="as" hidden aria-labelledby="as-h">
     <div class="panel-head"><h2 id="as-h">Ποιος πασάρει σε ποιον</h2></div>
     <div class="sel-row"><label class="sr-only" for="as-g">Αγώνας</label><select id="as-g" class="gsel on"></select></div>
     <h3 class="ff-h">Ζευγάρια με τα περισσότερα καλάθια</h3>
@@ -691,7 +700,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <p class="hint" style="margin-top:10px" id="as-note"></p>
   </section>
 
-<section class="panel" aria-labelledby="sc-h">
+<section class="panel" data-asec="sc" hidden aria-labelledby="sc-h">
     <div class="panel-head"><h2 id="sc-h">Χάρτης σουτ</h2></div>
     <div class="sel-row"><label class="sr-only" for="sc-g">Αγώνας</label><select id="sc-g" class="gsel on"></select><label class="sr-only" for="sc-p">Παίκτης</label><select id="sc-p" class="gsel on"></select></div>
     <div class="sc-wrap"><div><svg class="court" id="sc-svg" viewBox="-760 -170 1520 1150" role="img" aria-label="Χάρτης σουτ"></svg>
@@ -700,7 +709,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <p class="hint" style="margin-top:10px">Όλα τα σουτ εντός παιδιάς του Άρη (όχι βολές), από τα επίσημα δεδομένα θέσης της EuroCup και του FIBA LiveStats. Το καλάθι είναι πάνω.</p>
   </section>
 
-<section class="panel" aria-labelledby="lu-h">
+<section class="panel" data-asec="lu" hidden aria-labelledby="lu-h">
     <div class="panel-head"><h2 id="lu-h">Πεντάδες</h2></div>
     <div class="sel-row"><label class="sr-only" for="lu-g">Αγώνας</label><select id="lu-g" class="gsel on"></select>
       <div class="tabs" role="group" aria-label="Ταξινόμηση" id="lu-sort"><button class="tab" data-v="min">Περισσότερα λεπτά</button><button class="tab" data-v="pm">Καλύτερο +/−</button><button class="tab" data-v="p10">Καλύτερο ανά 10′</button><button class="tab" data-v="off">Πιο παραγωγική</button><button class="tab" data-v="def">Πιο αμυντική</button></div></div>
@@ -709,7 +718,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <p class="hint" style="margin-top:6px" id="lu-note2"></p>
   </section>
 
-<section class="panel" aria-labelledby="cmp-h">
+<section class="panel" data-asec="cmp" hidden aria-labelledby="cmp-h">
     <div class="panel-head"><h2 id="cmp-h">Σύγκριση παικτών</h2></div>
     <div class="filters">
       <div class="tabs" role="group" aria-label="Τρόπος σύγκρισης" id="cmp-mode">
@@ -1772,6 +1781,12 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
   }
   document.getElementById('subtabs').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){setSub(b.dataset.sub); window.scrollTo(0,0);}});
   setSub('sum');
+  function setAnal(k){
+    document.getElementById('anal-home').hidden=!!k; document.getElementById('aback').hidden=!k;
+    document.querySelectorAll('#view-anal section[data-asec]').forEach(x=>x.hidden=x.dataset.asec!==k);
+  }
+  document.getElementById('anal-home').addEventListener('click',e=>{const b=e.target.closest('button[data-a]'); if(b){setAnal(b.dataset.a); window.scrollTo(0,0);}});
+  document.getElementById('aback').addEventListener('click',()=>{setAnal(null); window.scrollTo(0,0);});
   function showView(v,scroll){
     ['home','stats','anal','sched','stand','player'].forEach(k=>{document.getElementById('view-'+k).hidden = v!==k;});
     document.getElementById('next-sec').classList.toggle('offview', v!=='home');
@@ -1784,7 +1799,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     const sheet=document.getElementById('sheet'), bg=document.getElementById('sheet-bg');
     const close=()=>{sheet.hidden=true; bg.hidden=true;};
     const SUB={'sum-h':'sum','box-h':'box','grid-h':'grid','how-h':'how'};
-    const go=(v,s)=>{ if(v==='stats'){ setSub(SUB[s]||'sum'); if(SUB[s]) s=null; } showView(v); close();
+    const go=(v,s)=>{ if(v==='stats'){ setSub(SUB[s]||'sum'); if(SUB[s]) s=null; } if(v==='anal'){ setAnal(s?s.replace(/-h$/,''):null); s=null; } showView(v); close();
       const sec=s?document.getElementById(s):null, tgt=sec?(sec.closest('section')||sec):null;
       const jump=()=>{ if(tgt) tgt.scrollIntoView({block:'start'}); else { window.scrollTo(0,0); document.body.scrollIntoView({block:'start'}); } };
       requestAnimationFrame(()=>requestAnimationFrame(jump)); setTimeout(jump,450); };
