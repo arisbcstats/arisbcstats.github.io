@@ -736,7 +736,6 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
         <div class="pl-id"><div id="pl-jersey" class="pl-jersey" aria-hidden="true"></div><div><h2 class="pl-name" id="pl-name"></h2><div class="pl-meta" id="pl-meta"></div></div></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label for="pl-sel" class="sr-only">Παίκτης</label><select id="pl-sel" class="gsel on"></select><button class="tab" id="pl-back">‹ Στατιστικά</button></div>
       </div>
-      <div class="card-btns" style="margin:0 0 12px"><button class="btn-y" type="button" id="pl-story">📸 Story για Instagram</button></div><div class="card-out" id="pl-story-out" hidden></div>
       <div class="pl-tiles" id="pl-tiles"></div>
       <div class="pl-h">Πορεία PIR</div>
       <p class="pl-sub">Ένας αγώνας ανά στήλη, με τη σειρά που παίχτηκαν.</p>
@@ -794,7 +793,6 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <button data-v="stand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4.5v1.5A3.5 3.5 0 0 0 8 11M17 6h2.5v1.5A3.5 3.5 0 0 1 16 11M12 14v3.5M8.5 20.5h7M9.5 17.5h5"/></svg>Βαθμολογίες</button>
     <button data-v="stats" data-s="ld-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg>Team Leaders</button>
     <button data-v="stats" data-s="grid-h"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M3.5 9h17M3.5 14.5h17M9.5 4v16M15 4v16"/></svg>Ανά αγώνα</button>
-    <button data-v="stats" data-s="last-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3.2l1.6-2.5h6.4L16.8 8H20v11H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg>Εικόνα για FB</button>
     <button data-v="anal" data-s="sc-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 4h17v16h-17zM8 4v6.5h8V4"/><path d="M5.5 4v3.5a6.5 6.5 0 0 0 13 0V4"/><circle cx="12" cy="6" r="1.2"/></svg>Χάρτης σουτ</button>
     <button data-v="anal" data-s="lu-h"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="6" cy="17" r="2"/><circle cx="18" cy="17" r="2"/></svg>Πεντάδες</button>
     <button data-v="anal" data-s="cmp-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M8 20h8M5 7h14M5 7l-2.5 6a2.5 2.5 0 0 0 5 0zM19 7l-2.5 6a2.5 2.5 0 0 0 5 0z"/></svg>Σύγκριση</button>
@@ -855,7 +853,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
       '<div class="score">'+sc+'</div><div><span class="res '+(won(L)?'w':'l')+'">'+(won(L)?'ΝΙΚΗ':'ΗΤΤΑ')+'</span><strong>'+esc(L.home?'Άρης – '+L.opp:L.opp+' – Άρης')+'</strong></div>'+
       qTable(L)+'<div class="tops">'+tops.map(t=>'<span class="top">'+pill(t.v,col(t.v))+'<span>'+esc(t.n)+'</span>'+(t.pm!=null?'<span class="mins">+/− '+signed(t.pm)+'</span>':'')+'</span>').join('')+'</div>'+
       (L.note?'<div class="note"><span class="note-k">Σχόλιο αγώνα</span>'+esc(L.note)+'</div>':'')+'<div class="card-btns" id="last-card" style="display:block"></div>';
-    cardUI(document.getElementById('last-card'),L);
+
   }
 
 
@@ -1342,14 +1340,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     x.fillStyle=GOLD; x.fillRect(0,H-90,W,90); T('arisbcstats.github.io',W/2,H-32,'800 44px '+DISP,'#16150f','center');
     return c;
   }
-  document.getElementById('pl-story').addEventListener('click',async()=>{
-    const out=document.getElementById('pl-story-out'); out.hidden=false; out.innerHTML='<span class="hint">Φτιάχνεται…</span>';
-    const n=document.getElementById('pl-name').textContent, c=await makeStory(n), url=c.toDataURL('image/png');
-    const fn='aris-story-'+n.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\wΑ-Ωα-ω.-]+/g,'-')+'.png';
-    out.innerHTML='<img alt="Story '+esc(n)+'" src="'+url+'" style="width:min(100%,300px)"><button class="btn-y" type="button" hidden>Αποθήκευση εικόνας</button><span class="hint">Ή πάτα παρατεταμένα την εικόνα → «Αποθήκευση εικόνας».</span>';
-    const sv=out.querySelector('button'); let dl=null; try{ dl=await (window.claude&&window.claude.use?window.claude.use('downloads'):null); }catch(e){}
-    if(dl){ sv.hidden=false; sv.addEventListener('click',()=>{ c.toBlob(async b=>{ try{ await dl.save({filename:fn,data:b}); sv.textContent='Αποθηκεύτηκε ✓'; }catch(e){ if(e&&e.code&&e.code!=='declined') sv.hidden=true; } },'image/png'); }); }
-  });
+
 
   // ===== analysis: assist network =====
   (function(){
@@ -1632,7 +1623,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     const bn=document.getElementById('box-note'); const gnote=!agg&&list[0].note;
     document.getElementById('box-q').innerHTML=agg?'':qTable(list[0]);
     document.getElementById('box-ff').innerHTML=ffHTML(list,agg?'Αντίπαλοι':list[0].opp);
-    const bc=document.getElementById('box-card'); if(agg) bc.innerHTML=''; else cardUI(bc,list[0]);
+    const bc=document.getElementById('box-card'); bc.innerHTML='';
     bn.hidden=!gnote; if(gnote) bn.innerHTML='<span class="note-k">Σχόλιο αγώνα</span>'+esc(gnote);
     if(agg){
       const w=list.filter(won).length;
