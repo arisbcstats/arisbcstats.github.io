@@ -226,7 +226,7 @@ footer a,.hint a{color:inherit}
 #pl-career .gl-table td.cl{text-align:left;white-space:nowrap}#pl-career tr.cur td{background:color-mix(in srgb,var(--gold) 14%,var(--panel));font-weight:700}
 .cmp-j{display:block;width:40px;height:46px;margin:2px auto 4px}.cmp-j svg{width:40px;height:46px;display:block}
 /* ===== app look: compact top bar, bottom nav, sheet ===== */
-body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));overflow-x:clip}
 .band{border-bottom:3px solid var(--gold)!important}
 .band .wrap{padding-block:14px 12px!important;align-items:center!important;flex-wrap:nowrap!important;gap:12px!important}
 .tb-logo{width:46px;height:46px;border-radius:12px;flex:0 0 auto}
@@ -255,6 +255,20 @@ body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 
 main section.panel{scroll-margin-top:10px}
 #next-sec.offview{display:none!important}
+.vmode{display:inline-flex;background:var(--chip);border-radius:12px;padding:3px;margin:0 0 10px}
+.vmode button{font:inherit;font-size:13px;font-weight:700;border:0;background:none;color:var(--muted);padding:6px 14px;border-radius:9px;cursor:pointer}
+.vmode button[aria-pressed="true"]{background:var(--gold);color:var(--gold-ink)}
+.pcards{display:flex;flex-direction:column;gap:7px}
+.pc{font:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:8px 10px;cursor:pointer;width:100%}
+.pc:active{border-color:var(--gold)}.pc:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.pc-j{flex:0 0 34px;height:40px}.pc-j svg{width:34px;height:40px;display:block}.pc-j.ini{display:grid;place-items:center;background:var(--chip);border-radius:50%;width:34px;height:34px;font-weight:800;font-size:12px}
+.pc-n{flex:1;min-width:0;margin-left:2px}.pc-n b{display:block;font-size:13.5px;line-height:1.15}.pc-n b.lg{font-size:12px;letter-spacing:-.01em}.pc-n small{color:var(--muted);font-size:11px;white-space:nowrap}
+.pc-k{display:flex;flex-direction:column;align-items:center;width:36px;flex:0 0 auto}.pc-k.pir{width:46px}.pc-k .pill{min-width:44px;padding:2px 5px;font-size:13px}
+.pc-k em{font-style:normal;font-family:var(--display);font-weight:800;font-size:17px;line-height:1.1}.pc-k small{font-size:9px;color:var(--muted);letter-spacing:.06em;font-weight:700}
+@media (max-width:370px){.pc{padding:7px 7px;gap:4px}.pc-k{width:31px}.pc-k.pir{width:42px}.pc-k em{font-size:15.5px}}
+.disc{margin-top:10px;padding:10px 12px;border-left:4px solid var(--gold);background:var(--chip);border-radius:8px;font-size:13.5px}
+.sheet-disc{margin-top:14px;text-align:center;font-size:12px;color:#bdb9a8}
+
 .nx-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .view{display:flex;flex-direction:column;gap:20px}
 .viewtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--band);border-radius:14px;padding:5px}
@@ -525,7 +539,9 @@ thead th:last-child{border-top-right-radius:8px}
       <div><label for="game-sel" class="sr-only">Αγώνας</label><select id="game-sel" class="gsel"></select></div>
     </div>
     <p class="hint" id="filter-note" style="margin-bottom:8px"></p>
-    <div class="scroll"><table id="sum-table"></table></div>
+    <div class="vmode" role="group" aria-label="Προβολή"><button type="button" data-m="cards">Κάρτες</button><button type="button" data-m="table">Πίνακας</button></div>
+    <div id="sum-cards" class="pcards"></div>
+    <div class="scroll" id="sum-wrap"><table id="sum-table"></table></div>
     <p class="hint" style="margin-top:10px">Πάτησε σε όνομα για την καρτέλα του παίκτη και σε επικεφαλίδα για ταξινόμηση. Μέσοι όροι ανά αγώνα που αγωνίστηκε ο παίκτης. Φόρμα = μ.ο. PIR των 3 τελευταίων αγώνων του, με ▲▼ όταν διαφέρει 3+ από τον μ.ο.</p>
   </section>
 
@@ -561,6 +577,7 @@ thead th:last-child{border-top-right-radius:8px}
 
   <section class="panel" aria-labelledby="how-h">
     <div class="panel-head"><h2 id="how-h">Πώς διαβάζεται</h2></div>
+    <p class="disc"><strong>Ανεπίσημη σελίδα φιλάθλου.</strong> Δεν συνδέεται με την ΚΑΕ Άρης. Τα στοιχεία προέρχονται από τα επίσημα box score της EuroLeague (EuroCup) και του FIBA LiveStats (Stoiximan GBL) και ελέγχονται αυτόματα.</p>
     <div class="notes">
       <div>
         <strong>PIR</strong>
@@ -741,8 +758,9 @@ thead th:last-child{border-top-right-radius:8px}
     <button data-v="anal" data-s="src-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5H12z"/><path d="M14.5 2.8v6.7h6.7a6.7 6.7 0 0 0-6.7-6.7z"/></svg>Πηγές πόντων</button>
     <button data-v="anal" data-s="op-h"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8-7.5 9.5-4.3-1.5-7.5-4.9-7.5-9.5V6z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg>Αντίπαλοι</button>
     <button data-v="stats" data-s="how-h"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6"/></svg>Οδηγός</button>
-    <button data-v="sched"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 14h2M11 14h2M14.5 14h2M7.5 17h2"/></svg>Πρόγραμμα</button>
+    <button data-v="sched" data-last="1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 14h2M11 14h2M14.5 14h2M7.5 17h2"/></svg>Πρόγραμμα</button>
   </div>
+  <p class="sheet-disc">Ανεπίσημη σελίδα φιλάθλου · δεν συνδέεται με την ΚΑΕ Άρης</p>
 </div>
 <div class="fanband" lang="el"><div class="wrap"><b>ΑΡΕΙΑΝΑΡΑ ΞΕΡΕΙΣ ΟΤΙ...</b></div></div>
 
@@ -1125,6 +1143,17 @@ thead th:last-child{border-top-right-radius:8px}
     if(!rows.length){ t.innerHTML='<tbody><tr><td class="dim" style="text-align:left">Κανένας αγώνας με αυτά τα φίλτρα ακόμα.</td></tr></tbody>'; }
     else t.innerHTML='<thead><tr>'+cs.map(c=>'<th class="'+(c[3]||'')+'" scope="col"'+(k===c[0]?' aria-sort="'+(state.dir<0?'descending':'ascending')+'"':'')+'><button class="th-btn" data-k="'+c[0]+'" data-active="'+(k===c[0])+'">'+c[1]+(k===c[0]?(state.dir<0?' ▾':' ▴'):'')+'</button></th>').join('')+'</tr></thead>'+
       '<tbody>'+rows.map(r=>'<tr>'+cs.map(c=>'<td class="'+(c[3]||'')+'">'+c[2](r)+'</td>').join('')+'</tr>').join('')+'</tbody>';
+    const pmS=v=>v==null?'–':(v>0?'+':v<0?'−':'')+nf(Math.abs(v),single?0:1);
+    document.getElementById('sum-cards').innerHTML=rows.map(r=>{const no=((D.bio||{})[r.name]||{}).no;
+      return '<button class="pc" type="button" data-p="'+esc(r.name)+'">'+(no!=null?'<span class="pc-j" aria-hidden="true">'+miniJersey(no)+'</span>':'<span class="pc-j ini" aria-hidden="true">'+esc(r.name.slice(0,2))+'</span>')+
+        '<span class="pc-n"><b'+(r.name.length>13?' class="lg"':'')+'>'+esc(r.name)+'</b><small>'+(single?mmss(r.sec)+' λεπτά':r.gp+' αγ. · '+nf(r.mpg,1)+'′')+'</small></span>'+
+        '<span class="pc-k pir">'+pill(single?r.avg:nf(r.avg,1),col(r.avg))+'<small>PIR</small></span>'+
+        '<span class="pc-k"><em>'+(single?r.ppg:nf(r.ppg,1))+'</em><small>ΠΟΝ</small></span><span class="pc-k"><em>'+(single?r.rpg:nf(r.rpg,1))+'</em><small>ΡΙΜ</small></span>'+
+        '<span class="pc-k"><em class="'+(r.pmg>0?'pos':r.pmg<0?'neg':'dim')+'">'+pmS(r.pmg)+'</em><small>+/−</small></span></button>';}).join('');
+    let vm=null; try{vm=localStorage.getItem('aris-vmode');}catch(e){}
+    if(!vm) vm=matchMedia('(max-width:700px)').matches?'cards':'table';
+    document.getElementById('sum-cards').hidden=vm!=='cards'; document.getElementById('sum-wrap').hidden=vm!=='table';
+    document.querySelectorAll('.vmode button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===vm)));
     document.querySelectorAll('#comp-tabs .tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===state.comp)));
     document.querySelectorAll('#ctx-tabs .tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===state.ctx)));
     save();
@@ -1544,6 +1573,8 @@ thead th:last-child{border-top-right-radius:8px}
   const goBox=gi=>{cur=gi; renderBox(); showView('stats'); document.getElementById('box-h').scrollIntoView({behavior:'smooth',block:'start'});};
   document.getElementById('pl-logs').addEventListener('click',e=>{const tr=e.target.closest('tr.gl-row'); if(tr) goBox(+tr.dataset.gi);});
   document.getElementById('pl-logs').addEventListener('keydown',e=>{const tr=e.target.closest('tr.gl-row'); if(tr&&e.key==='Enter') goBox(+tr.dataset.gi);});
+  document.getElementById('sum-cards').addEventListener('click',e=>{const c=e.target.closest('.pc'); if(c) openPlayer(c.dataset.p);});
+  document.querySelector('.vmode').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; try{localStorage.setItem('aris-vmode',b.dataset.m);}catch(x){} const m=b.dataset.m; document.getElementById('sum-cards').hidden=m!=='cards'; document.getElementById('sum-wrap').hidden=m!=='table'; document.querySelectorAll('.vmode button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.m===m)));});
   ['sum-table','grid-table'].forEach(id=>document.getElementById(id).addEventListener('click',e=>{const td=e.target.closest('tbody td.name'); if(!td) return; const f=td.querySelector('.full'); if(f) openPlayer(f.textContent);}));
 
 
