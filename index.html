@@ -221,6 +221,7 @@ footer a,.hint a{color:inherit}
 .asp-r i{grid-column:1/-1;display:block;height:6px;border-radius:3px;background:var(--gold)}
 #as-table td.name small{display:block;font-weight:500;color:var(--muted);font-size:12px;white-space:normal}
 .sbt{margin-top:14px}.sbt table{width:auto;min-width:min(100%,420px)}
+.appdl{display:inline-flex;flex-direction:column;align-self:center;background:var(--gold);color:var(--gold-ink);font-weight:800;text-decoration:none;border-radius:12px;padding:9px 16px;font-size:15px;line-height:1.2}.appdl small{font-weight:600;font-size:11.5px;opacity:.8}.appdl:focus-visible{outline:3px solid var(--band-ink);outline-offset:2px}
 .nx-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .view{display:flex;flex-direction:column;gap:20px}
 .viewtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--band);border-radius:14px;padding:5px}
@@ -423,6 +424,8 @@ thead th:last-child{border-top-right-radius:8px}
       <span class="sub" id="updated"></span>
     </div>
     <div class="records" id="records"></div>
+    <a class="appdl" id="appdl" href="https://arisbcstats.github.io" target="_blank" rel="noopener">📲 Κατέβασε την εφαρμογή <small>arisbcstats.github.io</small></a>
+    <script>if(/github\.io$/.test(location.hostname)||matchMedia('(display-mode: standalone)').matches) document.getElementById('appdl').remove();</script>
   </div>
 </header>
 
