@@ -4,7 +4,79 @@
 <meta name="description" content="Στατιστικά, PIR, πρόγραμμα και βαθμολογίες του Άρη στο μπάσκετ, από τα επίσημα box score.">
 <script>/* εκτός Claude: αποθήκευση εικόνων με απλό download */
 if(!window.claude){window.claude={use:async n=>n==='downloads'?{save:async({filename,data})=>{const u=URL.createObjectURL(data instanceof Blob?data:new Blob([data]));const a=document.createElement('a');a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return{status:'saved'};}}:null};}
-</script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+</script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><style>
+/* report builder */
+#rep-build{counter-reset:rs}
+.rstep{border-top:1px solid var(--line);padding:14px 0 6px;counter-increment:rs}
+.rstep h3{margin:0 0 10px;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);display:flex;gap:8px;align-items:center}
+.rstep h3:before{content:counter(rs);background:var(--gold);color:var(--gold-ink);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px}
+.rseg{display:flex;background:var(--chip);border-radius:12px;padding:3px;gap:2px}
+.rseg[hidden]{display:none}
+.rseg button{flex:1;font:inherit;border:0;background:transparent;color:var(--muted);padding:9px 4px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer}
+.rseg button[aria-pressed="true"]{background:var(--gold);color:var(--gold-ink)}
+.rchips{display:flex;flex-wrap:wrap;gap:7px}
+.rchips button{font:inherit;padding:7px 12px;border-radius:999px;background:var(--chip);font-size:12.5px;font-weight:600;color:var(--muted);border:1px solid transparent;cursor:pointer}
+.rchips button[aria-pressed="true"]{background:transparent;border-color:var(--gold);color:var(--gold)}
+.rchips button[aria-pressed="true"]:before{content:"✓ "}
+.rlbl{font-size:12px;color:var(--muted);margin:12px 0 6px}
+.rsel{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--chip);border-radius:12px;padding:6px 6px 6px 12px;margin-top:8px;font-weight:600}
+.rsel select{font:inherit;font-size:13.5px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:7px 8px;max-width:68%}
+.rsel[hidden]{display:none}
+.rnote{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.4}
+.rep-go{display:block;width:100%;margin-top:12px;font:inherit;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:.03em;text-transform:uppercase;background:var(--gold);color:var(--gold-ink);border:0;border-radius:14px;padding:14px;cursor:pointer}
+.rep-go:disabled{opacity:.4;cursor:default}
+.rep-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center}
+.rep-frame{width:100%;overflow:hidden;border-radius:10px;margin-top:8px;box-shadow:0 6px 24px rgba(0,0,0,.45)}
+.rep-cta{width:100%;font:inherit;color:var(--ink);text-align:left;display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,rgba(242,194,0,.16),rgba(242,194,0,.04));border:1.5px solid rgba(242,194,0,.55);border-radius:20px;padding:14px;cursor:pointer;margin:0}
+.rep-cta svg{width:34px;height:34px;flex:none;fill:none;stroke:var(--gold);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rep-cta b{display:block;font-size:15px}.rep-cta small{color:var(--muted);font-size:12px;line-height:1.35}.rep-cta i{font-style:normal;color:var(--gold);font-size:26px;margin-left:auto}
+.sgrid button.s-wide{grid-column:1/-1;height:56px;flex-direction:row;font-size:15px;gap:10px;border-color:var(--gold)!important;color:var(--gold)}
+.sgrid button.s-wide svg{width:28px;height:28px}
+/* report paper (always light) */
+.rep-paper{width:794px;min-height:1123px;background:#fff;color:#16150f;font-family:"Manrope",system-ui,sans-serif;font-size:12.5px;transform-origin:0 0;display:flex;flex-direction:column;line-height:1.35;text-align:left}
+.rep-paper *{box-sizing:border-box}
+.rp-hd{background:#0d0d0b;color:#f6f3e8;padding:38px 53px 26px;position:relative}
+.rp-stripe{position:absolute;left:0;right:0;bottom:0;height:5px;display:flex;overflow:hidden}.rp-stripe i{flex:none;width:26px;height:5px;background:#f2c200}.rp-stripe i:nth-child(2n){background:#0d0d0b}
+.rp-brand{display:flex;justify-content:space-between;font-weight:800;letter-spacing:.12em;font-size:10.5px;color:#f2c200}.rp-brand span:last-child{color:#bdb9a8;letter-spacing:.04em;font-weight:600}
+.rp-hd h1{font-family:"Fira Sans Extra Condensed","Arial Narrow",sans-serif;font-weight:800;font-size:34px;line-height:1.05;margin:8px 0 5px;text-transform:uppercase;color:#f6f3e8;display:flex;align-items:center;gap:4px}
+.rp-hd h1 .rp-no{width:34px;height:34px;font-size:17px;border-bottom-width:5px;margin-right:8px}
+.rp-hd p{margin:0;color:#bdb9a8;font-size:12px}.rp-hd p b{color:#f6f3e8}
+.rp-body{padding:22px 53px 10px;flex:1}
+.rp-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.rp-kpi{border:1px solid #e2dfd2;border-radius:10px;padding:8px 11px}
+.rp-kpi small{display:block;color:#6b6858;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.rp-kpi b{font-family:"Fira Sans Extra Condensed","Arial Narrow",sans-serif;font-weight:800;font-size:26px;line-height:1.15;display:block}
+.rp-kpi.hl{border:2px solid #f2c200;background:#fffbea}
+.rp-vs{color:#9d998a;font-weight:600}
+.rep-paper h2{font-family:"Fira Sans Extra Condensed","Arial Narrow",sans-serif;font-weight:800;text-transform:uppercase;font-size:17px;letter-spacing:.03em;margin:0 0 9px;display:flex;align-items:center;gap:8px;color:#16150f}
+.rep-paper h2:before{content:"";width:5px;height:16px;background:#f2c200;border-radius:2px}
+.rp-ins{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:4px}
+.rp-ins li{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start;padding:6px 10px;border-radius:9px;background:#f3f1ea;line-height:1.45}
+.rp-ins i{font-style:normal;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:11px}
+.rp-ins .g i{background:#24803f}.rp-ins .b i{background:#b03a2e}.rp-ins .n i{background:#8a8676}
+.rep-paper table{width:100%;border-collapse:collapse;margin-bottom:18px;background:none}
+.rep-paper th{font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:#6b6858;text-align:right;padding:0 6px 5px;border-bottom:2px solid #16150f;font-weight:700;background:none;position:static}
+.rep-paper th:first-child,.rep-paper td:first-child{text-align:left}
+.rep-paper td{padding:4px 6px;border-bottom:1px solid #e2dfd2;text-align:right;font-variant-numeric:tabular-nums;color:#16150f;background:none}
+.rep-paper td small{color:#8a8676;font-size:10px}
+.rep-paper td.v{font-weight:800;font-size:13px}
+.rp-st.cmp td,.rp-st.cmp th{text-align:center}.rp-st.cmp td:first-child,.rp-st.cmp th:first-child{text-align:left}.rp-st.cmp td.v{font-weight:400;font-size:12.5px}
+.rp-win{background:#f2c200;font-weight:800;padding:1px 7px;border-radius:6px}
+.rp-rk{display:inline-block;min-width:34px;text-align:center;font-weight:800;font-style:normal;font-size:11px;padding:2px 6px;border-radius:6px;background:#f3f1ea;color:#16150f}
+.rp-rk.t1{background:#f2c200}.rp-rk.t3{background:#fff1b8}.rp-rk.low{background:#f6d9d4;color:#b03a2e}
+.rp-barh,.rp-barc{width:130px}
+.rp-bar{position:relative;height:6px;background:#e2dfd2;border-radius:3px;margin-left:8px}
+.rp-bar span{position:absolute;top:-3px;width:12px;height:12px;border-radius:50%;background:#f2c200;border:2px solid #16150f;transform:translateX(-50%)}
+.rp-up{color:#24803f;font-weight:800}.rp-dn{color:#b03a2e;font-weight:800}
+.rp-two{display:grid;grid-template-columns:1.45fr 1fr;gap:28px}
+.rp-two .rp-wide{grid-column:1/-1}
+.rp-res div{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2dfd2}.rp-res small{color:#8a8676}
+.rp-no{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:5px;background:#f2c200;color:#16150f;font-size:9.5px;font-weight:800;border-bottom:3px solid #16150f;margin-right:6px;vertical-align:middle;flex:none}
+.rp-ft{display:flex;justify-content:space-between;gap:16px;font-size:9.5px;color:#6b6858;border-top:1px solid #e2dfd2;margin:0 53px;padding:10px 0 26px}
+.rp-ft b{color:#16150f}
+.rep-paper h2{flex-direction:row;justify-content:flex-start;text-align:left}.rep-paper h2::after{display:none}
+</style>
+</head><body>
 <title>ARIS BC Statistics</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -546,6 +618,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <div class="panel-head"><h2 id="last-h">Τελευταίος αγώνας</h2><span class="hint" id="last-meta"></span></div>
     <div class="last" id="last"></div>
   </section>
+  <button type="button" class="rep-cta" id="rep-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 17v-3M12 17v-6M15 17v-4"/></svg><span><b>Φτιάξε το δικό σου report</b><small>διάλεξε ομάδα ή παίκτη, αγώνες και στατιστικά · κατέβασέ το σε PDF ή εικόνα</small></span><i aria-hidden="true">›</i></button>
 
   <section class="panel ld-sec" aria-labelledby="ld-h">
     <div class="panel-head">
@@ -777,6 +850,33 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     </section>
   </div>
 
+  <div class="view" id="view-rep" hidden>
+    <section class="panel" id="rep-build" aria-labelledby="rep-h">
+      <div class="panel-head"><h2 id="rep-h">Φτιάξε το report σου</h2></div>
+      <div class="rstep"><h3>Θέμα</h3>
+        <div class="rseg" data-k="mode"><button type="button" data-v="team">Ομάδα</button><button type="button" data-v="player">Παίκτης</button><button type="button" data-v="cmp">Σύγκριση</button></div>
+        <div id="rep-pl" hidden><label class="rsel"><span>Παίκτης</span><select id="rep-p1"></select></label><label class="rsel" id="rep-p2w"><span>με</span><select id="rep-p2"></select></label></div>
+      </div>
+      <div class="rstep"><h3>Αγώνες</h3>
+        <div class="rseg" data-k="comp"><button type="button" data-v="ALL">Όλοι</button><button type="button" data-v="EC">EuroCup</button><button type="button" data-v="GBL">GBL</button></div>
+        <div class="rlbl">Φίλτρα (προαιρετικά)</div>
+        <div class="rchips" id="rep-f"><button type="button" data-f="home">Εντός</button><button type="button" data-f="away">Εκτός</button><button type="button" data-f="w">Νίκες</button><button type="button" data-f="l">Ήττες</button><button type="button" data-f="last5">Τελευταίοι 5</button></div>
+        <label class="rsel"><span>Αντίπαλος</span><select id="rep-opp"></select></label>
+      </div>
+      <div class="rstep"><h3>Σύγκριση</h3>
+        <div class="rseg" data-k="scope" id="rep-scope"><button type="button" data-v="G">Όμιλος (8)</button><button type="button" data-v="A">Όλο το EuroCup (32)</button></div>
+        <p class="rnote" id="rep-scope-note"></p>
+      </div>
+      <div class="rstep"><h3>Στατιστικά</h3><div id="rep-stats"></div><div class="rlbl">Ενότητες</div><div class="rchips" id="rep-secs"></div></div>
+      <p class="rnote" id="rep-count" style="text-align:center"></p>
+      <button type="button" class="rep-go" id="rep-go">Δημιουργία report</button>
+    </section>
+    <section id="rep-out" hidden>
+      <div class="rep-actions"><button type="button" class="btn-y" id="rep-png">Εικόνα PNG</button><button type="button" class="btn-y" id="rep-pdf">PDF</button><button type="button" class="tab" id="rep-edit">← Αλλαγές</button></div>
+      <p class="hint" id="rep-msg" aria-live="polite"></p>
+      <div class="rep-frame"><div id="rep-paper" class="rep-paper"></div></div>
+    </section>
+  </div>
   <div class="view" id="view-stand" hidden>
     <section class="panel" aria-labelledby="st-h">
       <div class="panel-head">
@@ -820,6 +920,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Μενού" hidden>
   <i class="grab" aria-hidden="true"></i><div class="sheet-t">ΜΕΝΟΥ</div>
   <div class="sgrid">
+    <button data-v="rep" class="s-wide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 17v-3M12 17v-6M15 17v-4"/></svg>Φτιάξε το δικό σου report</button>
     <button data-v="stats" data-s="sum-h"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.4 5.5 5.8"/></svg>Παίκτες</button>
     <button data-v="stats" data-s="box-h"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4M8.5 9.5h7M8.5 13h7M8.5 16.5h4.5"/></svg>Box score</button>
     <button data-v="home" data-s="mvp-h"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.5L7 21l5-2.5 5 2.5-1.5-7.5"/><path d="M12 6.5l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 8.6l2-.3z"/></svg>MVP</button>
@@ -1799,11 +1900,11 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
   document.getElementById('anal-home').addEventListener('click',e=>{const b=e.target.closest('button[data-a]'); if(b){setAnal(b.dataset.a); window.scrollTo(0,0);}});
   document.getElementById('aback').addEventListener('click',()=>{setAnal(null); window.scrollTo(0,0);});
   function showView(v,scroll){
-    ['home','stats','anal','sched','stand','player'].forEach(k=>{document.getElementById('view-'+k).hidden = v!==k;});
+    ['home','stats','anal','sched','stand','player','rep'].forEach(k=>{document.getElementById('view-'+k).hidden = v!==k;});
     document.getElementById('next-sec').classList.toggle('offview', v!=='home');
     document.querySelectorAll('#viewtabs .vt').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.v===v)));
     if(scroll) window.scrollTo({top:0,behavior:'smooth'});
-    document.querySelectorAll('#bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(v==='player'?'stats':v==='stand'?'menu':v)));
+    document.querySelectorAll('#bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(v==='player'?'stats':(v==='stand'||v==='rep')?'menu':v)));
   }
   document.getElementById('viewtabs').addEventListener('click',e=>{const b=e.target.closest('.vt'); if(b) showView(b.dataset.v);});
   (function(){
@@ -1820,6 +1921,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     sheet.addEventListener('click',e=>{const b=e.target.closest('button'); if(b) go(b.dataset.v,b.dataset.s);});
     bg.addEventListener('click',close); addEventListener('keydown',e=>{if(e.key==='Escape') close();});
   })();
+  document.getElementById('rep-cta').addEventListener('click',()=>{showView('rep'); window.scrollTo(0,0);});
   document.getElementById('upnext').addEventListener('click',e=>{if(e.target.closest('#to-sched')) showView('sched',true);});
   (function(){
     const TZ='Europe/Athens';
@@ -1932,6 +2034,274 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
       raf=requestAnimationFrame(step);
     }
     try{ document.querySelectorAll('.band,.fanband').forEach(el=>start(el, el.classList.contains('band')?520:420)); }catch(e){}
+  })();
+
+  // ===== Report builder =====
+  (function(){
+    const root=document.getElementById('view-rep'); if(!root) return;
+    const $=s=>root.querySelector(s);
+    const ST={mode:'team',comp:'EC',scope:'A',f:new Set(),opp:'',p1:'',p2:'',sel:{},secs:{}};
+    const TEAM=[
+      ['pts','Πόντοι υπέρ',1,'',0],['pa','Πόντοι κατά',-1,'',0],['reb','Ριμπάουντ',1,'',0],['orb','Επιθετικά ριμπάουντ',1,'',0],['ast','Ασίστ',1,'',0],['stl','Κλεψίματα',1,'',0],['oto','Λάθη αντιπάλου',1,'',0],['to','Λάθη',-1,'',0],['blk','Τάπες',1,'',0],['pir','PIR ομάδας',1,'',0],
+      ['drtg','Αμυντική απόδοση',-1,'',1,'/100 κατοχές'],['ortg','Επιθετική απόδοση',1,'',1,'/100 κατοχές'],['pace','Ρυθμός',0,'',1,'κατοχές'],['orp','OR%',1,'%',1],['drp','DR%',1,'%',1],['efg','eFG%',1,'%',1],['ts','TS%',1,'%',1],['p2','Δίποντα %',1,'%',1],['p3','Τρίποντα %',1,'%',1],['ft','Βολές %',1,'%',1]];
+    const PLAY=[
+      ['pir','PIR',1,'',0],['pts','Πόντοι',1,'',0],['reb','Ριμπάουντ',1,'',0],['ast','Ασίστ',1,'',0],['min','Λεπτά',1,'',0],['stl','Κλεψίματα',1,'',0],['blk','Τάπες',1,'',0],['to','Λάθη',-1,'',0],['orb','Επιθ. ριμπάουντ',1,'',0],['fd','Φάουλ που κέρδισε',1,'',0],['pm','+/−',1,'',0],
+      ['p2','Δίποντα %',1,'%',1],['p3','Τρίποντα %',1,'%',1],['ft','Βολές %',1,'%',1],['ts','TS%',1,'%',1]];
+    const DEF={team:['pts','pa','reb','oto','drtg','ortg','pace','orp','drp','p3'],player:['pir','pts','reb','ast','min','p2','p3','ft','ts','pm']};
+    const SECS={team:[['ins','Αυτόματα συμπεράσματα'],['pl','Κορυφαίοι παίκτες'],['res','Αποτελέσματα']],player:[['ins','Αυτόματα συμπεράσματα'],['log','Αγώνας-αγώνας']]};
+    const cat=()=>ST.mode==='team'?TEAM:PLAY, ckey=()=>ST.mode==='team'?'team':'player';
+    ['team','player'].forEach(k=>{ST.sel[k]=new Set(DEF[k]); ST.secs[k]=new Set(SECS[k].map(x=>x[0]));});
+    const FL={home:'Εντός',away:'Εκτός',w:'Νίκες',l:'Ήττες',last5:'Τελευταίοι 5'};
+    const COMPN={ALL:'Όλοι οι αγώνες',EC:'EuroCup',GBL:'Stoiximan GBL'};
+
+    // ---- data
+    const byComp=c=>games.filter(g=>c==='ALL'||g.comp===c);
+    function filtered(){
+      let L=byComp(ST.comp);
+      if(ST.f.has('last5')) L=L.slice(-5);
+      if(ST.f.has('home')) L=L.filter(g=>g.home); if(ST.f.has('away')) L=L.filter(g=>!g.home);
+      if(ST.f.has('w')) L=L.filter(g=>g.ptsFor>g.ptsAgainst); if(ST.f.has('l')) L=L.filter(g=>g.ptsFor<g.ptsAgainst);
+      if(ST.opp) L=L.filter(g=>g.opp===ST.opp);
+      return L;
+    }
+    const hasFilter=()=>ST.f.size>0||!!ST.opp;
+    function teamAgg(L){
+      const k={gp:0,w:0,pts:0,pa:0,m2:0,a2:0,m3:0,a3:0,fm:0,fa:0,or:0,dr:0,to:0,oa2:0,oa3:0,ofa:0,oor:0,odr:0,oto:0,ast:0,stl:0,blk:0,pir:0};
+      L.forEach(g=>{const F=g.tt.for,A=g.tt.against; k.gp++; if(g.ptsFor>g.ptsAgainst)k.w++; k.pts+=g.ptsFor; k.pa+=g.ptsAgainst;
+        ['m2','a2','m3','a3','fm','fa','or','dr','to'].forEach(x=>k[x]+=F[x]); k.oa2+=A.a2; k.oa3+=A.a3; k.ofa+=A.fa; k.oor+=A.or; k.odr+=A.dr; k.oto+=A.to;
+        g.players.forEach(p=>{k.ast+=p.ast; k.stl+=p.stl; k.blk+=p.blk; if(p.sec) k.pir+=pir(p);});});
+      if(!k.gp) return null; const n=k.gp, fga=k.a2+k.a3, poss=fga+.44*k.fa-k.or+k.to, op=k.oa2+k.oa3+.44*k.ofa-k.oor+k.oto;
+      return {gp:n,w:k.w,l:n-k.w,diff:(k.pts-k.pa)/n,pts:k.pts/n,pa:k.pa/n,reb:(k.or+k.dr)/n,orb:k.or/n,ast:k.ast/n,stl:k.stl/n,oto:k.oto/n,to:k.to/n,blk:k.blk/n,pir:k.pir/n,
+        drtg:100*k.pa/op,ortg:100*k.pts/poss,pace:(poss+op)/2/n,orp:100*k.or/(k.or+k.odr),drp:100*k.dr/(k.dr+k.oor),efg:100*(k.m2+1.5*k.m3)/fga,ts:100*k.pts/(2*(fga+.44*k.fa)),
+        p2:100*k.m2/Math.max(1,k.a2),p3:100*k.m3/Math.max(1,k.a3),ft:100*k.fm/Math.max(1,k.fa),otoShare:100*k.oto/op};
+    }
+    function plAgg(name,L){
+      const k={gp:0,sec:0,pts:0,reb:0,ast:0,stl:0,blk:0,to:0,or:0,fd:0,pm:0,m2:0,a2:0,m3:0,a3:0,fm:0,fa:0,pir:0,log:[]};
+      L.forEach(g=>{const p=g.players.find(x=>x.name===name); if(!p||!p.sec) return; k.gp++; const v=pir(p); k.pir+=v;
+        ['sec','pts','reb','ast','stl','blk','to','or','fd','pm','m2','a2','m3','a3','fm','fa'].forEach(x=>k[x]+=(p[x]||0)); k.log.push({g,p,v});});
+      if(!k.gp) return null; const n=k.gp;
+      return {gp:n,log:k.log,pir:k.pir/n,pts:k.pts/n,reb:k.reb/n,ast:k.ast/n,min:k.sec/60/n,stl:k.stl/n,blk:k.blk/n,to:k.to/n,orb:k.or/n,fd:k.fd/n,pm:k.pm/n,
+        p2:k.a2?100*k.m2/k.a2:null,p3:k.a3?100*k.m3/k.a3:null,ft:k.fa?100*k.fm/k.fa:null,ts:(k.a2+k.a3+k.fa)?100*k.pts/(2*(k.a2+k.a3+.44*k.fa)):null,a3:k.a3,fa:k.fa};
+    }
+    const playersIn=L=>{const m=new Map(); L.forEach(g=>g.players.forEach(p=>{if(p.sec) m.set(p.name,(m.get(p.name)||0)+p.sec);})); return [...m.entries()].sort((a,b)=>b[1]-a[1]).map(x=>x[0]);};
+    const grpT=()=>{ if(ST.comp==='EC') return (ST.scope==='A'&&D.grp&&D.grp.ECALL)||(D.grp&&D.grp.EC)||null; if(ST.comp==='GBL') return (D.grp&&D.grp.GBL)||null; return null; };
+    const tval=(t,k)=>k==='pace'?(t.ortg&&t.drtg?(100*t.pts/t.ortg+100*t.pa/t.drtg)/2:null):t[k];
+    const lc=l=>/[A-Z]{2}/.test(l)?l:l.toLowerCase();
+    const f1=(v,suf)=>v==null||isNaN(v)?'–':nf(v,1)+(suf||'');
+    const fv=(k,v,suf)=>k==='pm'?(v==null?'–':sgn(v,1)):f1(v,suf);
+
+    // ---- builder UI
+    function opts(){
+      const L=byComp(ST.comp), opps=[...new Set(L.map(g=>g.opp))].sort((a,b)=>a.localeCompare(b,'el'));
+      if(ST.opp&&!opps.includes(ST.opp)) ST.opp='';
+      $('#rep-opp').innerHTML='<option value="">Όλοι</option>'+opps.map(o=>'<option'+(o===ST.opp?' selected':'')+'>'+esc(o)+'</option>').join('');
+      const P=playersIn(L), lab=n=>{const no=((D.bio||{})[n]||{}).no; return (no!=null?'#'+no+' ':'')+n;};
+      if(!P.includes(ST.p1)) ST.p1=P[0]||''; if(!P.includes(ST.p2)||ST.p2===ST.p1) ST.p2=P.find(x=>x!==ST.p1)||'';
+      $('#rep-p1').innerHTML=P.map(n=>'<option value="'+esc(n)+'"'+(n===ST.p1?' selected':'')+'>'+esc(lab(n))+'</option>').join('');
+      $('#rep-p2').innerHTML=P.map(n=>'<option value="'+esc(n)+'"'+(n===ST.p2?' selected':'')+'>'+esc(lab(n))+'</option>').join('');
+    }
+    function paint(){
+      root.querySelectorAll('.rseg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(ST[s.dataset.k]===b.dataset.v))));
+      root.querySelectorAll('#rep-f button').forEach(b=>b.setAttribute('aria-pressed',String(ST.f.has(b.dataset.f))));
+      $('#rep-pl').hidden=ST.mode==='team'; $('#rep-p2w').hidden=ST.mode!=='cmp';
+      const showScope=ST.mode==='team'&&ST.comp==='EC'&&!!(D.grp&&D.grp.ECALL);
+      $('#rep-scope').hidden=!showScope;
+      let note='';
+      if(ST.mode!=='team') note=hasFilter()?'Σύγκριση με το σύνολο του παίκτη στους αγώνες χωρίς φίλτρα.':(ST.mode==='cmp'?'Οι δύο παίκτες δίπλα-δίπλα· τονίζεται ο καλύτερος σε κάθε στατιστικό.':'Θέση του παίκτη ανάμεσα στους συμπαίκτες του.');
+      else if(hasFilter()) note='Με φίλτρα, ο Άρης συγκρίνεται με τον εαυτό του στους αγώνες χωρίς φίλτρα.';
+      else if(ST.comp==='ALL') note='Για όλους τους αγώνες μαζί δεν υπάρχει κατάταξη· βγαίνουν δίπλα-δίπλα EuroCup και GBL.';
+      else if(ST.comp==='GBL') note='Θέση του Άρη ανάμεσα στις ομάδες της Stoiximan GBL.';
+      else note=ST.scope==='A'?'Θέση του Άρη ανάμεσα στις 32 ομάδες του EuroCup.':'Θέση του Άρη ανάμεσα στις 8 ομάδες του ομίλου.';
+      $('#rep-scope-note').textContent=note;
+      const C=cat(), S=ST.sel[ckey()];
+      const chip=([k,l])=>'<button type="button" data-k="'+k+'" aria-pressed="'+S.has(k)+'">'+l+'</button>';
+      $('#rep-stats').innerHTML='<div class="rlbl" style="margin-top:0">Βασικά</div><div class="rchips">'+C.filter(c=>!c[4]).map(chip).join('')+'</div><div class="rlbl">Ποσοστά &amp; απόδοση</div><div class="rchips">'+C.filter(c=>c[4]).map(chip).join('')+'</div>';
+      const SS=ST.secs[ckey()];
+      $('#rep-secs').innerHTML=SECS[ckey()].map(([k,l])=>'<button type="button" data-k="'+k+'" aria-pressed="'+SS.has(k)+'">'+l+'</button>').join('');
+      const n=filtered().length; $('#rep-count').textContent=n?(n+(n===1?' αγώνας':' αγώνες')+' με αυτές τις επιλογές'):'Κανένας αγώνας με αυτές τις επιλογές';
+      $('#rep-go').disabled=!n||(ST.mode==='cmp'&&(!ST.p2||ST.p1===ST.p2));
+    }
+    root.addEventListener('click',e=>{
+      const sb=e.target.closest('.rseg button');
+      if(sb){ ST[sb.closest('.rseg').dataset.k]=sb.dataset.v; if(sb.closest('.rseg').dataset.k==='comp') opts(); paint(); return; }
+      const fb=e.target.closest('#rep-f button');
+      if(fb){ const f=fb.dataset.f, X={home:'away',away:'home',w:'l',l:'w'}; if(ST.f.has(f)) ST.f.delete(f); else { ST.f.add(f); if(X[f]) ST.f.delete(X[f]); } paint(); return; }
+      const cb=e.target.closest('#rep-stats button');
+      if(cb){ const S=ST.sel[ckey()]; S.has(cb.dataset.k)?S.delete(cb.dataset.k):S.add(cb.dataset.k); if(!S.size) S.add(cb.dataset.k); paint(); return; }
+      const xb=e.target.closest('#rep-secs button');
+      if(xb){ const S=ST.secs[ckey()]; S.has(xb.dataset.k)?S.delete(xb.dataset.k):S.add(xb.dataset.k); paint(); return; }
+    });
+    $('#rep-opp').addEventListener('change',e=>{ST.opp=e.target.value; paint();});
+    $('#rep-p1').addEventListener('change',e=>{ST.p1=e.target.value; if(ST.p2===ST.p1) opts(); paint();});
+    $('#rep-p2').addEventListener('change',e=>{ST.p2=e.target.value; paint();});
+
+    // ---- report
+    const badge=n=>{const no=((D.bio||{})[n]||{}).no; return no!=null?'<span class="rp-no">'+no+'</span>':'';};
+    const today=()=>{const d=new Date(); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();};
+    const rk=(r,N)=>'<span class="rp-rk'+(r===1?' t1':r<=3?' t3':(N&&r>N-Math.max(1,Math.round(N*.2)))?' low':'')+'">'+r+(r===1?'ος':'ος')+'</span>';
+    const delta=(v,b,dir,k)=>{ if(v==null||b==null) return '–'; const d=v-b; const good=dir===0?0:Math.sign(d)*dir; const t=(d>0?'+':d<0?'−':'±')+nf(Math.abs(d),1); return '<span class="'+(Math.abs(d)<.05?'':good>0?'rp-up':good<0?'rp-dn':'')+'">'+t+'</span>'; };
+    const li=(c,t)=>'<li class="'+c+'"><i>'+(c==='g'?'✓':c==='b'?'!':'~')+'</i><span>'+t+'</span></li>';
+    function sig(k,suf,d){ return suf==='%'||['drtg','ortg'].includes(k)?Math.abs(d)>=3:k==='pace'?Math.abs(d)>=2:false; }
+
+    function buildTeam(L){
+      const A=teamAgg(L), S=TEAM.filter(c=>ST.sel.team.has(c[0])), T=(!hasFilter()&&ST.comp!=='ALL')?grpT():null;
+      const ins=[]; let head, rows, kp;
+      const scopeName=ST.comp==='GBL'?'της GBL':ST.scope==='A'&&D.grp.ECALL?'του EuroCup':'του ομίλου';
+      if(T&&T.teams['Άρης']){
+        const names=Object.keys(T.teams), N=names.length;
+        const R=S.map(([k,l,dir,suf,,sub])=>{const vals=names.map(n=>tval(T.teams[n],k)), me=tval(T.teams['Άρης'],k);
+          const r=1+vals.filter(v=>v!=null&&(dir<0?v<me:v>me)).length, avg=vals.reduce((s,v)=>s+v,0)/N; return {k,l,dir,suf,sub,v:me,r,avg};});
+        head=['Στατιστικό','Άρης','Μ.Ο.',"Θέση",'1ος ← → '+N+'ος'];
+        rows=R.map(x=>[x.l+(x.sub?' <small>'+x.sub+'</small>':''),f1(x.v,x.suf),f1(x.avg,x.suf),rk(x.r,N),'<div class="rp-bar"><span style="left:'+(100*(x.r-1)/Math.max(1,N-1))+'%"></span></div>']);
+        const cut=Math.max(1,Math.round(N*.2)), R2=R.filter(x=>x.dir!==0);
+        R2.filter(x=>x.r<=cut).sort((a,b)=>a.r-b.r).slice(0,3).forEach(x=>{
+          if(x.k==='drtg'&&x.r===1) ins.push(li('g','<b>Καλύτερη άμυνα '+scopeName+':</b> '+f1(x.v)+' πόντοι κατά ανά 100 κατοχές, '+nf(x.avg-x.v,1)+' καλύτερα από τον μέσο όρο ('+f1(x.avg)+').'));
+          else if(x.k==='oto') ins.push(li('g','<b>Πιέζει την μπάλα:</b> '+f1(x.v)+' λάθη αντιπάλου ανά αγώνα ('+x.r+'ος), το '+nf(A.otoShare,0)+'% των επιθέσεων του αντιπάλου τελειώνει με λάθος.'));
+          else ins.push(li('g','<b>'+x.l+': '+x.r+'ος</b> με '+f1(x.v,x.suf)+' (μ.ό. '+f1(x.avg,x.suf)+').'));});
+        R2.filter(x=>x.r>N-cut).sort((a,b)=>b.r-a.r).slice(0,2).forEach(x=>ins.push(li('b','<b>Αδύναμο σημείο, '+lc(x.l)+':</b> '+f1(x.v,x.suf)+', '+x.r+'ος στους '+N+' (μ.ό. '+f1(x.avg,x.suf)+').')));
+        const mid=R.filter(x=>x.dir!==0&&x.r>cut&&x.r<=N-cut).sort((a,b)=>Math.abs(a.r-N/2)-Math.abs(b.r-N/2)).slice(0,1), pc=R.find(x=>x.k==='pace');
+        const mt=mid.map(x=>lc(x.l)+' '+f1(x.v,x.suf)+' ('+x.r+'ος)'); if(pc) mt.push('ρυθμός '+f1(pc.v)+' κατοχές ανά αγώνα ('+pc.r+'ος σε ταχύτητα, μ.ό. '+f1(pc.avg)+')');
+        if(mt.length) ins.push(li('n','<b>Στη μέση:</b> '+mt.join(' και ')+'.'));
+        const pr=n=>{const x=R.find(r=>r.k===n); return x?' <em>'+rk(x.r,N)+'</em>':'';};
+        kp=[['Ρεκόρ',A.w+'-'+A.l,'<em class="rp-rk">'+sgn(A.diff,1)+' διαφορά</em>'],['Πόντοι υπέρ',f1(tval(T.teams['Άρης'],'pts')),pr('pts')],['Πόντοι κατά',f1(tval(T.teams['Άρης'],'pa')),pr('pa')],
+          (()=>{const best=R.filter(x=>x.dir!==0&&!['pts','pa'].includes(x.k)).sort((a,b)=>a.r-b.r)[0]; return best?[best.l,f1(best.v,best.suf),pr(best.k),best.r===1]:['PIR ομάδας',f1(A.pir),''];})()];
+      } else if(hasFilter()||ST.comp!=='ALL'){
+        const B=teamAgg(byComp(ST.comp));
+        head=['Στατιστικό','Άρης','Χωρίς φίλτρα','Διαφορά'];
+        rows=S.map(([k,l,dir,suf,,sub])=>[l+(sub?' <small>'+sub+'</small>':''),f1(A[k],suf),f1(B[k],suf),delta(A[k],B[k],dir,k)]);
+        const D2=S.filter(c=>c[2]!==0).map(([k,l,dir,suf])=>{const d=A[k]-B[k]; const rel=suf==='%'||['drtg','ortg'].includes(k)?d/4:(B[k]?d/B[k]/.1:0); return {k,l,suf,dir,d,s:rel*dir};});
+        D2.filter(x=>x.s>=1).sort((a,b)=>b.s-a.s).slice(0,3).forEach(x=>ins.push(li('g','<b>Καλύτερα σε '+lc(x.l)+':</b> '+f1(A[x.k],x.suf)+' έναντι '+f1(B[x.k],x.suf)+' συνολικά.')));
+        D2.filter(x=>x.s<=-1).sort((a,b)=>a.s-b.s).slice(0,2).forEach(x=>ins.push(li('b','<b>Χειρότερα σε '+lc(x.l)+':</b> '+f1(A[x.k],x.suf)+' έναντι '+f1(B[x.k],x.suf)+' συνολικά.')));
+        if(!ins.length) ins.push(li('n','<b>Χωρίς μεγάλες διαφορές</b> από την εικόνα του Άρη σε όλους τους αγώνες '+COMPN[ST.comp]+'.'));
+        kp=[['Ρεκόρ',A.w+'-'+A.l,'<em class="rp-rk">'+sgn(A.diff,1)+' διαφορά</em>'],['Πόντοι υπέρ',f1(A.pts),'<em class="rp-rk">'+delta(A.pts,B.pts,1)+'</em>'],['Πόντοι κατά',f1(A.pa),'<em class="rp-rk">'+delta(A.pa,B.pa,-1)+'</em>'],['Αμυντική απόδοση',f1(A.drtg),'<em class="rp-rk">'+delta(A.drtg,B.drtg,-1)+'</em>']];
+      } else {
+        const E=teamAgg(byComp('EC')), G=teamAgg(byComp('GBL'));
+        head=['Στατιστικό','Σύνολο','EuroCup','GBL'];
+        rows=S.map(([k,l,dir,suf,,sub])=>[l+(sub?' <small>'+sub+'</small>':''),f1(A[k],suf),E?f1(E[k],suf):'–',G?f1(G[k],suf):'–']);
+        if(E&&G) S.filter(c=>c[2]!==0).map(([k,l,dir,suf])=>{const d=E[k]-G[k]; return {k,l,suf,dir,d,s:Math.abs(suf==='%'||['drtg','ortg'].includes(k)?d/4:(G[k]?d/G[k]/.1:0))};}).filter(x=>x.s>=1).sort((a,b)=>b.s-a.s).slice(0,3)
+          .forEach(x=>ins.push(li(x.d*x.dir>0?'g':'b','<b>'+x.l+':</b> '+f1(E[x.k],x.suf)+' στο EuroCup, '+f1(G[x.k],x.suf)+' στη GBL. '+(x.d*x.dir>0?'Καλύτερα στην Ευρώπη.':'Καλύτερα στο πρωτάθλημα.'))));
+        if(!ins.length) ins.push(li('n','<b>Ίδια εικόνα</b> σε EuroCup και GBL στα στατιστικά που διάλεξες.'));
+        kp=[['Ρεκόρ',A.w+'-'+A.l,'<em class="rp-rk">'+sgn(A.diff,1)+' διαφορά</em>'],['Πόντοι υπέρ',f1(A.pts),''],['Πόντοι κατά',f1(A.pa),''],['Αμυντική απόδοση',f1(A.drtg),'<em class="rp-rk">/100 κατοχές</em>']];
+      }
+      if(A.gp<3) ins.push(li('n','<b>Μικρό δείγμα:</b> μόνο '+A.gp+(A.gp===1?' αγώνας':' αγώνες')+', τα νούμερα αλλάζουν εύκολα.'));
+      // extra sections
+      let ex='';
+      if(ST.secs.team.has('pl')){
+        const P=playersIn(L).map(n=>Object.assign({n},plAgg(n,L))).filter(x=>x.gp>=Math.ceil(L.length/2)).sort((a,b)=>b.pir-a.pir).slice(0,5);
+        ex+='<div><h2>Κορυφαίοι παίκτες</h2><table><tr><th>Παίκτης</th><th>PIR</th><th>ΠΟΝ</th><th>ΡΙΜ</th><th>ΑΣ</th></tr>'+P.map(x=>'<tr><td>'+badge(x.n)+esc(x.n)+'</td><td class="v">'+f1(x.pir)+'</td><td>'+f1(x.pts)+'</td><td>'+f1(x.reb)+'</td><td>'+f1(x.ast)+'</td></tr>').join('')+'</table></div>';
+      }
+      if(ST.secs.team.has('res')) ex+='<div><h2>Αποτελέσματα</h2><div class="rp-res">'+L.slice(-10).map(g=>{const w=g.ptsFor>g.ptsAgainst; return '<div><span>'+(g.home?'':'@ ')+esc(g.opp)+' <small>'+dshort(g.date)+'</small></span><b class="'+(w?'rp-up':'rp-dn')+'">'+(w?'Ν ':'Η ')+g.ptsFor+'-'+g.ptsAgainst+'</b></div>';}).join('')+'</div></div>';
+      const title='Ο Άρης '+(ST.comp==='EC'?'στο EuroCup':ST.comp==='GBL'?'στη GBL':'· όλοι οι αγώνες');
+      const cmpTxt=T?('Σύγκριση με τις '+Object.keys(T.teams).length+' ομάδες '+scopeName):(hasFilter()?'Σύγκριση με το σύνολο':ST.comp==='ALL'?'EuroCup και GBL':'');
+      return {title,sub:'<b>'+A.gp+(A.gp===1?' αγώνας':' αγώνες')+' · '+A.w+'-'+A.l+'</b>'+(cmpTxt?' · '+cmpTxt:''),kp,ins,head,rows,ex,src:ST.comp==='GBL'?'FIBA LiveStats':ST.comp==='EC'?'EuroLeague':'EuroLeague & FIBA LiveStats'};
+    }
+
+    function buildPlayer(L){
+      const n=ST.p1, A=plAgg(n,L); if(!A) return null;
+      const S=PLAY.filter(c=>ST.sel.player.has(c[0])); const ins=[]; let head,rows,kp;
+      if(!hasFilter()){
+        const mates=playersIn(L).map(x=>Object.assign({n:x},plAgg(x,L))).filter(x=>x.n===n||x.gp>=Math.ceil(L.length/2)), N=mates.length;
+        const R=S.map(([k,l,dir,suf])=>{const me=A[k]; const vs=mates.map(m=>m[k]).filter(v=>v!=null); const r=me==null?null:1+vs.filter(v=>dir<0?v<me:v>me).length; return {k,l,dir,suf,v:me,r};});
+        head=['Στατιστικό',n,'Θέση στην ομάδα'];
+        rows=R.map(x=>[x.l,fv(x.k,x.v,x.suf),x.r?rk(x.r)+' <small>από '+N+'</small>':'–']);
+        R.filter(x=>x.r&&x.r<=2&&x.k!=='min'&&!(x.suf==='%'&&((x.k==='p3'&&A.a3<6)||(x.k==='ft'&&A.fa<6)))).sort((a,b)=>a.r-b.r).slice(0,3).forEach(x=>ins.push(li('g','<b>'+x.l+': '+x.r+'ος στην ομάδα</b> με '+fv(x.k,x.v,x.suf)+'.')));
+        const pr=k=>{const x=R.find(r=>r.k===k)||{r:null}; return x.r?'<em class="rp-rk'+(x.r===1?' t1':'')+'">'+x.r+'ος στην ομάδα</em>':'';};
+        kp=[['PIR',f1(A.pir),pr('pir'),true],['Πόντοι',f1(A.pts),pr('pts')],['Ριμπάουντ',f1(A.reb),pr('reb')],['Ασίστ',f1(A.ast),pr('ast')]];
+      } else {
+        const B=plAgg(n,byComp(ST.comp));
+        head=['Στατιστικό',n,'Χωρίς φίλτρα','Διαφορά'];
+        rows=S.map(([k,l,dir,suf])=>[l,fv(k,A[k],suf),fv(k,B[k],suf),delta(A[k],B[k],dir,k)]);
+        const dd=(k,dir)=>{const d=A[k]-B[k]; return d*dir;};
+        S.filter(c=>A[c[0]]!=null&&B[c[0]]!=null&&!(c[0]==='p3'&&A.a3<6)&&!(c[0]==='ft'&&A.fa<6)).map(([k,l,dir,suf])=>({k,l,suf,s:dd(k,dir)/(suf==='%'?5:Math.max(1,Math.abs(B[k])*.15))})).filter(x=>Math.abs(x.s)>=1).sort((a,b)=>Math.abs(b.s)-Math.abs(a.s)).slice(0,4)
+          .forEach(x=>ins.push(li(x.s>0?'g':'b','<b>'+x.l+':</b> '+fv(x.k,A[x.k],x.suf)+' έναντι '+fv(x.k,B[x.k],x.suf)+' συνολικά.')));
+        if(!ins.length) ins.push(li('n','<b>Ίδια εικόνα</b> με το σύνολο της σεζόν.'));
+        kp=[['PIR',f1(A.pir),'<em class="rp-rk">'+delta(A.pir,B.pir,1)+'</em>',true],['Πόντοι',f1(A.pts),'<em class="rp-rk">'+delta(A.pts,B.pts,1)+'</em>'],['Ριμπάουντ',f1(A.reb),'<em class="rp-rk">'+delta(A.reb,B.reb,1)+'</em>'],['Ασίστ',f1(A.ast),'<em class="rp-rk">'+delta(A.ast,B.ast,1)+'</em>']];
+      }
+      const W=A.log.filter(x=>x.g.ptsFor>x.g.ptsAgainst), Lo=A.log.filter(x=>x.g.ptsFor<x.g.ptsAgainst), av=a=>a.reduce((s,x)=>s+x.v,0)/a.length;
+      if(W.length&&Lo.length) ins.push(li('n','<b>Νίκες – ήττες:</b> PIR '+nf(av(W),1)+' στις νίκες, '+nf(av(Lo),1)+' στις ήττες.'));
+      const H=A.log.filter(x=>x.g.home), Aw=A.log.filter(x=>!x.g.home);
+      if(H.length&&Aw.length&&Math.abs(av(H)-av(Aw))>=3) ins.push(li('n','<b>Έδρα:</b> PIR '+nf(av(H),1)+' εντός, '+nf(av(Aw),1)+' εκτός.'));
+      const best=A.log.slice().sort((a,b)=>b.v-a.v)[0];
+      if(best&&A.gp>1) ins.push(li('g','<b>Καλύτερος αγώνας:</b> PIR '+best.v+' με αντίπαλο '+esc(best.g.opp)+(best.g.home?' (εντός)':' (εκτός)')+' ('+best.p.pts+' πόντοι, '+best.p.reb+' ριμπάουντ, '+best.p.ast+' ασίστ).'));
+      if(A.gp>=4){const l3=av(A.log.slice(-3)); if(Math.abs(l3-A.pir)>=3) ins.push(li(l3>A.pir?'g':'b','<b>Φόρμα:</b> PIR '+nf(l3,1)+' στους 3 τελευταίους, έναντι '+nf(A.pir,1)+' συνολικά.'));}
+      if(A.gp<3) ins.push(li('n','<b>Μικρό δείγμα:</b> μόνο '+A.gp+(A.gp===1?' αγώνας':' αγώνες')+'.'));
+      let ex='';
+      if(ST.secs.player.has('log')) ex='<div class="rp-wide"><h2>Αγώνας-αγώνας</h2><table><tr><th>Αγώνας</th><th>Αποτ.</th><th>Λεπτά</th><th>ΠΟΝ</th><th>ΡΙΜ</th><th>ΑΣ</th><th>PIR</th></tr>'+A.log.map(({g,p,v})=>{const w=g.ptsFor>g.ptsAgainst; return '<tr><td>'+(g.home?'':'@ ')+esc(g.opp)+' <small>'+dshort(g.date)+'</small></td><td class="'+(w?'rp-up':'rp-dn')+'">'+(w?'Ν ':'Η ')+g.ptsFor+'-'+g.ptsAgainst+'</td><td>'+mmss(p.sec)+'</td><td>'+p.pts+'</td><td>'+p.reb+'</td><td>'+p.ast+'</td><td class="v">'+v+'</td></tr>';}).join('')+'</table></div>';
+      return {title:n,badge:n,sub:'<b>'+A.gp+(A.gp===1?' αγώνας':' αγώνες')+'</b> · '+COMPN[ST.comp]+' · '+nf(A.min,1)+' λεπτά ανά αγώνα',kp,ins,head,rows,ex,src:ST.comp==='GBL'?'FIBA LiveStats':ST.comp==='EC'?'EuroLeague':'EuroLeague & FIBA LiveStats'};
+    }
+
+    function buildCmp(L){
+      const a=ST.p1,b=ST.p2, A=plAgg(a,L), B=plAgg(b,L); if(!A||!B) return null;
+      const S=PLAY.filter(c=>ST.sel.player.has(c[0])); const ins=[]; let wa=0,wb=0;
+      const rows=S.map(([k,l,dir,suf])=>{const x=A[k],y=B[k]; let ca='',cb='';
+        if(x!=null&&y!=null&&dir!==0&&Math.abs(x-y)>.05){ if((x-y)*dir>0){ca=' class="rp-win"';wa++;} else {cb=' class="rp-win"';wb++;} }
+        return [l,'<span'+ca+'>'+fv(k,x,suf)+'</span>','<span'+cb+'>'+fv(k,y,suf)+'</span>'];});
+      ins.push(li('n','<b>Μετά από '+S.length+' στατιστικά:</b> '+esc(a)+' καλύτερος σε '+wa+', '+esc(b)+' σε '+wb+'.'));
+      const okp=(X,k)=>!(k==='p3'&&X.a3<6)&&!(k==='ft'&&X.fa<6);
+      const edge=S.filter(([k,,dir])=>dir!==0&&A[k]!=null&&B[k]!=null&&okp(A,k)&&okp(B,k)).map(([k,l,dir,suf])=>({k,l,suf,s:(A[k]-B[k])*dir/(suf==='%'?5:Math.max(1,Math.abs(B[k]+A[k])/2*.15))}));
+      const ea=edge.filter(x=>x.s>=1).sort((x,y)=>y.s-x.s)[0], eb=edge.filter(x=>x.s<=-1).sort((x,y)=>x.s-y.s)[0];
+      if(ea) ins.push(li('g','<b>Το δυνατό χαρτί του '+esc(a)+':</b> '+lc(ea.l)+', '+fv(ea.k,A[ea.k],ea.suf)+' έναντι '+fv(ea.k,B[ea.k],ea.suf)+'.'));
+      if(eb) ins.push(li('g','<b>Το δυνατό χαρτί του '+esc(b)+':</b> '+lc(eb.l)+', '+fv(eb.k,B[eb.k],eb.suf)+' έναντι '+fv(eb.k,A[eb.k],eb.suf)+'.'));
+      const common=L.filter(g=>A.log.some(x=>x.g===g)&&B.log.some(x=>x.g===g));
+      if(common.length){ let ca=0,cb=0; common.forEach(g=>{const va=A.log.find(x=>x.g===g).v, vb=B.log.find(x=>x.g===g).v; if(va>vb)ca++; else if(vb>va)cb++;});
+        ins.push(li('n','<b>Στους '+common.length+' κοινούς αγώνες:</b> μεγαλύτερο PIR ο '+esc(a)+' '+ca+' φορές, ο '+esc(b)+' '+cb+'.'));}
+      let ex='';
+      if(ST.secs.player.has('log')&&common.length) ex='<div class="rp-wide"><h2>PIR αγώνα-αγώνα</h2><table><tr><th>Αγώνας</th><th>'+esc(a)+'</th><th>'+esc(b)+'</th></tr>'+common.map(g=>{const va=A.log.find(x=>x.g===g).v, vb=B.log.find(x=>x.g===g).v; return '<tr><td>'+(g.home?'':'@ ')+esc(g.opp)+' <small>'+dshort(g.date)+'</small></td><td'+(va>vb?' class="v"':'')+'>'+va+'</td><td'+(vb>va?' class="v"':'')+'>'+vb+'</td></tr>';}).join('')+'</table></div>';
+      const kt=(l,k)=>[l,f1(A[k])+'<span class="rp-vs"> – </span>'+f1(B[k]),''];
+      return {title:a+' vs '+b,sub:'<b>'+COMPN[ST.comp]+'</b> · '+A.gp+' και '+B.gp+' αγώνες',kp:[kt('PIR','pir'),kt('Πόντοι','pts'),kt('Ριμπάουντ','reb'),kt('Ασίστ','ast')],ins,head:['Στατιστικό',badge(a)+esc(a),badge(b)+esc(b)],rows,ex,cmp:true,src:ST.comp==='GBL'?'FIBA LiveStats':ST.comp==='EC'?'EuroLeague':'EuroLeague & FIBA LiveStats'};
+    }
+
+    function render(){
+      const L=filtered(); if(!L.length) return;
+      const R=ST.mode==='team'?buildTeam(L):ST.mode==='player'?buildPlayer(L):buildCmp(L); if(!R) return;
+      const fl=[...ST.f].map(f=>FL[f]).concat(ST.opp?['vs '+ST.opp]:[]);
+      const last=L[L.length-1].date;
+      const showIns=ST.secs[ckey()].has('ins');
+      const html='<div class="rp-hd"><div class="rp-brand"><span>ARIS BC STATS · REPORT</span><span>'+today()+'</span></div><h1>'+(R.badge?badge(R.badge):'')+esc(R.title)+'</h1><p>'+R.sub+' · Έως '+dlong(last)+' · Φίλτρα: '+(fl.length?esc(fl.join(', ')):'κανένα')+'</p><div class="rp-stripe">'+'<i></i>'.repeat(31)+'</div></div>'
+        +'<div class="rp-body"><div class="rp-kpis">'+R.kp.map(k=>'<div class="rp-kpi'+(k[3]?' hl':'')+'"><small>'+k[0]+'</small><b>'+k[1]+'</b>'+(k[2]||'')+'</div>').join('')+'</div>'
+        +(showIns&&R.ins.length?'<h2>Συμπεράσματα</h2><ul class="rp-ins">'+R.ins.join('')+'</ul>':'')
+        +'<h2>Στατιστικά</h2><table class="rp-st'+(R.cmp?' cmp':'')+'"><tr>'+R.head.map((h,i)=>'<th'+(i===R.head.length-1&&R.head.length===5?' class="rp-barh"':'')+'>'+h+'</th>').join('')+'</tr>'+R.rows.map(r=>'<tr>'+r.map((c,i)=>'<td'+(i===1?' class="v"':'')+(i===4?' class="rp-barc"':'')+'>'+c+'</td>').join('')+'</tr>').join('')+'</table>'
+        +(R.ex?'<div class="rp-two">'+R.ex+'</div>':'')+'</div>'
+        +'<div class="rp-ft"><span><b>arisbcstats.github.io</b> · Ανεπίσημη σελίδα οπαδού, χωρίς σχέση με την ΚΑΕ Άρης</span><span>Πηγή: επίσημα box score '+R.src+(ST.mode==='team'?' · κατοχές = FGA + 0,44·FTA − OR + TO':'')+'</span></div>';
+      const P=$('#rep-paper'); P.innerHTML=html;
+      $('#rep-build').hidden=true; $('#rep-out').hidden=false; $('#rep-msg').textContent=''; fit(); window.scrollTo(0,0);
+      ST.fname='aris-report-'+(ST.mode==='team'?'team':ST.p1.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w]+/g,'-'))+'-'+ST.comp.toLowerCase();
+      try{ window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:'report-'+ST.mode,title:'Report',event:true}); }catch(e){}
+    }
+    function fit(){ const F=$('.rep-frame'), P=$('#rep-paper'); if(!F||$('#rep-out').hidden) return; const s=Math.min(1,F.clientWidth/794); P.style.transform='scale('+s+')'; F.style.height=(P.offsetHeight*s)+'px'; }
+    addEventListener('resize',fit);
+    $('#rep-go').addEventListener('click',render);
+    $('#rep-edit').addEventListener('click',()=>{$('#rep-out').hidden=true; $('#rep-build').hidden=false; window.scrollTo(0,0);});
+
+    // ---- export
+    const libs={};
+    const load=src=>libs[src]||(libs[src]=new Promise((res,rej)=>{const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>{delete libs[src]; rej(new Error('load'));}; document.head.appendChild(s);}));
+    async function snap(){
+      await load('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+      const host=document.createElement('div'); host.style.cssText='position:fixed;left:-10000px;top:0;width:794px;z-index:-1';
+      const c=$('#rep-paper').cloneNode(true); c.removeAttribute('id'); c.classList.add('rep-paper'); c.style.transform='none'; host.appendChild(c); document.body.appendChild(host);
+      const UP=t=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+      c.querySelectorAll('*').forEach(el=>{ if(getComputedStyle(el).textTransform==='uppercase'){ el.style.textTransform='none'; el.childNodes.forEach(n=>{ if(n.nodeType===3) n.nodeValue=UP(n.nodeValue); }); } });
+      try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; return await window.html2canvas(c,{scale:2,backgroundColor:'#ffffff',logging:false}); } finally{ host.remove(); }
+    }
+    async function save(blob,fn){
+      let dl=null; try{ dl=await (window.claude&&window.claude.use?window.claude.use('downloads'):null); }catch(e){}
+      if(dl){ try{ await dl.save({filename:fn,data:blob}); return 'Αποθηκεύτηκε ✓'; }catch(e){ if(e&&e.code==='declined') return ''; } }
+      const u=URL.createObjectURL(blob), a=document.createElement('a'); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); return 'Κατέβηκε ✓';
+    }
+    async function exp(kind,btn){
+      const msg=$('#rep-msg'), t=btn.textContent; btn.disabled=true; btn.textContent='Φτιάχνεται…'; msg.textContent='';
+      try{
+        const cv=await snap();
+        if(kind==='png'){ const b=await new Promise(r=>cv.toBlob(r,'image/png')); msg.textContent=await save(b,ST.fname+'.png'); }
+        else { await load('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'); const J=window.jspdf.jsPDF, h=210*cv.height/cv.width;
+          const pdf=new J({unit:'mm',format:[210,Math.max(h,100)],orientation:'portrait'}); pdf.addImage(cv.toDataURL('image/jpeg',.92),'JPEG',0,0,210,h); msg.textContent=await save(pdf.output('blob'),ST.fname+'.pdf'); }
+      }catch(e){ msg.textContent='Δεν έγινε η αποθήκευση. Χρειάζεται σύνδεση στο internet την πρώτη φορά· δοκίμασε ξανά.'; }
+      btn.disabled=false; btn.textContent=t;
+    }
+    $('#rep-png').addEventListener('click',e=>exp('png',e.currentTarget));
+    $('#rep-pdf').addEventListener('click',e=>exp('pdf',e.currentTarget));
+    opts(); paint();
   })();
 
   document.getElementById('legend').innerHTML=scale.map(s=>pill(s[2],'var('+s[1]+')')).join('');
