@@ -2366,8 +2366,9 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
       let pos=null,of=null; try{ const tb=gblTable(); pos=tb.rows.findIndex(x=>x.team===name)+1; of=tb.rows.length; }catch(e){}
       return {w,l,pos,of,lab:'στη GBL'};
     }
+    const oppList=()=>Object.keys(ST.comp==='EC'&&D.grp.EC?D.grp.EC.teams:T().teams).filter(n=>n!=='Άρης'&&T().teams[n]).sort((a,b)=>a.localeCompare(b,'el'));
     function opts(){
-      const names=Object.keys(T().teams).filter(n=>n!=='Άρης').sort((a,b)=>a.localeCompare(b,'el'));
+      const names=oppList();
       const nx=nextOf(ST.comp); if(!names.includes(ST.opp)) ST.opp=(nx&&names.includes(nx.opp))?nx.opp:names[0];
       $('#h2h-opp').innerHTML=names.map(n=>'<option'+(n===ST.opp?' selected':'')+'>'+esc(n)+(nextOf(ST.comp)&&nextOf(ST.comp).opp===n?' · επόμενος':'')+'</option>').join('');
       root.querySelectorAll('#h2h-comp .tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===ST.comp)));
@@ -2420,7 +2421,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
       $('#h2h-body').innerHTML=h;
     }
     root.addEventListener('click',e=>{const b=e.target.closest('#h2h-comp .tab'); if(b){ ST.comp=b.dataset.v; ST.opp=''; render(); }});
-    $('#h2h-opp').addEventListener('change',e=>{ST.opp=Object.keys(T().teams).filter(n=>n!=='Άρης').sort((a,b)=>a.localeCompare(b,'el'))[e.target.selectedIndex]; render();});
+    $('#h2h-opp').addEventListener('change',e=>{ST.opp=oppList()[e.target.selectedIndex]; render();});
     window.__openH2H=(opp,comp)=>{ if(comp){ST.comp=comp;} if(opp) ST.opp=opp; render(); showView('h2h'); window.scrollTo(0,0); };
     document.addEventListener('click',e=>{const b=e.target.closest('.go-h2h'); if(b) window.__openH2H(b.dataset.opp,b.dataset.comp);});
     render();
