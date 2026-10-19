@@ -180,7 +180,8 @@ footer a,.hint a{color:inherit}
 .sc-wrap{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:16px 24px;align-items:start}
 @media (max-width:700px){.sc-wrap{grid-template-columns:1fr}}
 .court{width:100%;height:auto;display:block;background:color-mix(in srgb,var(--gold) 9%,var(--panel));border-radius:10px}
-.court .ln{fill:none;stroke:var(--muted);stroke-width:5;opacity:.6}
+.court .ln{fill:none;stroke:var(--gold);stroke-width:5;opacity:.9}
+.court .wm{font-family:var(--display);font-weight:800;font-size:58px;letter-spacing:2px;fill:#f3efe2;opacity:.75}.court .wm-y{fill:var(--gold)}
 .court .mk{fill:var(--s20);stroke:var(--panel);stroke-width:6}
 .court .ms{fill:none;stroke:var(--bad);stroke-width:9;opacity:.75}
 .zn{display:flex;flex-direction:column;gap:8px}
@@ -1465,7 +1466,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
       selP.innerHTML='<option value="ALL">Όλη η ομάδα</option>'+names.map(n=>'<option'+(n===psel?' selected':'')+'>'+esc(n)+'</option>').join('');
       const sh=all.filter(s=>psel==='ALL'||s.n===psel);
       const r=gsel==='ALL'&&psel==='ALL'?13:18;
-      document.getElementById('sc-svg').innerHTML=court+sh.filter(s=>!s.m).map(s=>'<g class="ms"><line x1="'+(s.x-r)+'" y1="'+(s.y-r)+'" x2="'+(s.x+r)+'" y2="'+(s.y+r)+'"/><line x1="'+(s.x-r)+'" y1="'+(s.y+r)+'" x2="'+(s.x+r)+'" y2="'+(s.y-r)+'"/></g>').join('')+
+      document.getElementById('sc-svg').innerHTML=court+'<text class="wm" x="735" y="955" text-anchor="end"><tspan class="wm-y">ARIS BC</tspan> STATS</text>'+sh.filter(s=>!s.m).map(s=>'<g class="ms"><line x1="'+(s.x-r)+'" y1="'+(s.y-r)+'" x2="'+(s.x+r)+'" y2="'+(s.y+r)+'"/><line x1="'+(s.x-r)+'" y1="'+(s.y+r)+'" x2="'+(s.x+r)+'" y2="'+(s.y-r)+'"/></g>').join('')+
         sh.filter(s=>s.m).map(s=>'<circle class="mk" cx="'+s.x+'" cy="'+s.y+'" r="'+(r+4)+'"/>').join('');
       const zone=s=>s.t===3?(Math.abs(s.x)>=600&&s.y<=150?'c3':'a3'):(Math.hypot(s.x,s.y)<=250?'rim':'mid');
       const Z=[['rim','Κοντά στο καλάθι','έως 2,5 μ.'],['mid','Μέση απόσταση','δίποντα πέρα από 2,5 μ.'],['c3','Τρίποντα από κόρνερ',''],['a3','Τρίποντα (υπόλοιπα)','']];
