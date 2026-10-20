@@ -1,7 +1,7 @@
 # usage: python3 adv3.py data.json -> adds g.ast (ποιος πασάρει σε ποιον) και g.st (αρχική πεντάδα) όπου λείπουν
 import json,sys,collections,urllib.request
-ECN={'ANTETOKOUNMPO, KOSTAS':'Κ. Αντετοκούνμπο','ANTETOKOUNMPO, THANASIS':'Θ. Αντετοκούνμπο','BIRCH, KHEM':'Μπιρτς','CHARALAMPOPOULOS, VASILIS':'Χαραλαμπόπουλος','DIMITRIJEVIC, NENO':'Ντιμιτρίεβιτς','LIDDELL, E.J':'Λίντελ','MITROU - LONG, ELIJAH':'Μήτρου-Λονγκ','MOKOKA, ADAM':'Μοκόκα','MORGAN, MATTHEW':'Μόργκαν','ROBINSON - EARL, JEREMIAH':'Ρόμπινσον-Ερλ','TOLIOPOULOS, VASSILIS':'Τολιόπουλος','BOCHORIDIS, ELEFTHERIOS':'Μποχωρίδης','CHATZILAMPROU, CHRYSOSTOMOS':'Χατζηλάμπρου'}
-FBN={'8':'Μήτρου-Λονγκ','15':'Ρόμπινσον-Ερλ','4':'Τολιόπουλος','12':'Ντιμιτρίεβιτς','3':'Μποχωρίδης','13':'Μόργκαν','16':'Λίντελ','1':'Χαραλαμπόπουλος','10':'Κ. Αντετοκούνμπο','6':'Θ. Αντετοκούνμπο','5':'Μπιρτς','14':'Μοκόκα','11':'Χατζηλάμπρου'}
+ECN={'JOVIC, STEFAN':'Γιόβιτς','ANTETOKOUNMPO, KOSTAS':'Κ. Αντετοκούνμπο','ANTETOKOUNMPO, THANASIS':'Θ. Αντετοκούνμπο','BIRCH, KHEM':'Μπιρτς','CHARALAMPOPOULOS, VASILIS':'Χαραλαμπόπουλος','DIMITRIJEVIC, NENO':'Ντιμιτρίεβιτς','LIDDELL, E.J':'Λίντελ','MITROU - LONG, ELIJAH':'Μήτρου-Λονγκ','MOKOKA, ADAM':'Μοκόκα','MORGAN, MATTHEW':'Μόργκαν','ROBINSON - EARL, JEREMIAH':'Ρόμπινσον-Ερλ','TOLIOPOULOS, VASSILIS':'Τολιόπουλος','BOCHORIDIS, ELEFTHERIOS':'Μποχωρίδης','CHATZILAMPROU, CHRYSOSTOMOS':'Χατζηλάμπρου'}
+FBN={'24':'Γιόβιτς','8':'Μήτρου-Λονγκ','15':'Ρόμπινσον-Ερλ','4':'Τολιόπουλος','12':'Ντιμιτρίεβιτς','3':'Μποχωρίδης','13':'Μόργκαν','16':'Λίντελ','1':'Χαραλαμπόπουλος','10':'Κ. Αντετοκούνμπο','6':'Θ. Αντετοκούνμπο','5':'Μπιρτς','14':'Μοκόκα','11':'Χατζηλάμπρου'}
 def get(u): return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'curl/8.5.0','Accept':'application/json'}),timeout=40))
 def build(g):
     pairs=collections.Counter(); st=[]
