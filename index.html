@@ -748,7 +748,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
 
   <section class="panel" data-sub="how" hidden aria-labelledby="how-h">
     <div class="panel-head"><h2 id="how-h">Πώς διαβάζεται</h2></div>
-    <p class="disc"><strong>Ανεπίσημη σελίδα φιλάθλου.</strong> Δεν συνδέεται με την ΚΑΕ Άρης. Τα στοιχεία προέρχονται από τα επίσημα box score της EuroLeague (EuroCup) και του FIBA LiveStats (Stoiximan GBL) και ελέγχονται αυτόματα.</p>
+    <p class="disc"><strong>Ανεπίσημη, μη εμπορική σελίδα φιλάθλου.</strong> Δεν συνδέεται με την ΚΑΕ Άρης και δεν έχει κανέναν εμπορικό σκοπό. Τα στοιχεία προέρχονται από τα επίσημα box score της EuroLeague (EuroCup) και του FIBA LiveStats (Stoiximan GBL) και ελέγχονται αυτόματα.</p>
     <div class="notes">
       <div>
         <strong>PIR</strong>
@@ -980,7 +980,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     <button data-v="stats" data-s="how-h"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6"/></svg>Οδηγός</button>
     <button data-v="sched" data-last="1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 14h2M11 14h2M14.5 14h2M7.5 17h2"/></svg>Πρόγραμμα</button>
   </div>
-  <p class="sheet-disc">Ανεπίσημη σελίδα φιλάθλου · δεν συνδέεται με την ΚΑΕ Άρης</p>
+  <p class="sheet-disc">Ανεπίσημη, μη εμπορική σελίδα φιλάθλου · δεν συνδέεται με την ΚΑΕ Άρης</p>
 </div>
 <div class="fanband" lang="el"><div class="wrap"><b>ΑΡΕΙΑΝΑΡΑ ΞΕΡΕΙΣ ΟΤΙ...</b></div></div>
 
@@ -2304,7 +2304,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
         +(showIns&&R.ins.length?'<h2>Συμπεράσματα</h2><ul class="rp-ins">'+R.ins.join('')+'</ul>':'')
         +'<h2>Στατιστικά</h2><table class="rp-st'+(R.cmp?' cmp':'')+'"><tr>'+R.head.map((h,i)=>'<th'+(i===R.head.length-1&&R.head.length===5?' class="rp-barh"':'')+'>'+h+'</th>').join('')+'</tr>'+R.rows.map(r=>'<tr>'+r.map((c,i)=>'<td'+(i===1?' class="v"':'')+(i===4?' class="rp-barc"':'')+'>'+c+'</td>').join('')+'</tr>').join('')+'</table>'
         +(R.ex?'<div class="rp-two">'+R.ex+'</div>':'')+'</div>'
-        +'<div class="rp-ft"><span><b>arisbcstats.github.io</b> · Ανεπίσημη σελίδα οπαδού, χωρίς σχέση με την ΚΑΕ Άρης</span><span>Πηγή: επίσημα box score '+R.src+(ST.mode==='team'?' · κατοχές = FGA + 0,44·FTA − OR + TO':'')+'</span></div>';
+        +'<div class="rp-ft"><span><b>arisbcstats.github.io</b> · Ανεπίσημη, μη εμπορική σελίδα οπαδού, χωρίς σχέση με την ΚΑΕ Άρης</span><span>Πηγή: επίσημα box score '+R.src+(ST.mode==='team'?' · κατοχές = FGA + 0,44·FTA − OR + TO':'')+'</span></div>';
       const P=$('#rep-paper'); P.innerHTML=html;
       $('#rep-build').hidden=true; $('#rep-out').hidden=false; $('#rep-msg').textContent=''; fit(); window.scrollTo(0,0);
       ST.fname='aris-report-'+(ST.mode==='team'?'team':ST.p1.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w]+/g,'-'))+'-'+ST.comp.toLowerCase();
@@ -2429,7 +2429,7 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
   })();
 
   document.getElementById('legend').innerHTML=scale.map(s=>pill(s[2],'var('+s[1]+')')).join('');
-  document.getElementById('footer').textContent='Πηγές: επίσημα box scores EuroCup (Euroleague Basketball) και FIBA LiveStats (ΕΣΑΚΕ). Το PIR και το +/− έχουν ελεγχθεί με τα επίσημα νούμερα. Ανεπίσημη σελίδα οπαδού, χωρίς σχέση με την ΚΑΕ Άρης.';
+  document.getElementById('footer').textContent='Πηγές: επίσημα box scores EuroCup (Euroleague Basketball) και FIBA LiveStats (ΕΣΑΚΕ). Το PIR και το +/− έχουν ελεγχθεί με τα επίσημα νούμερα. Ανεπίσημη, μη εμπορική σελίδα οπαδού, χωρίς σχέση με την ΚΑΕ Άρης.';
 })();
 </script>
 <script>
