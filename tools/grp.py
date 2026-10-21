@@ -2,7 +2,7 @@ import json,sys,collections,urllib.request,concurrent.futures as cf
 def get(u):
     try: return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'curl/8.5.0','Accept':'application/json'}),timeout=40))
     except Exception: return None
-ECG={'ARI':'Άρης','JER':'Χάποελ Ιερουσαλήμ','RIG':'Ρίγα','LEM':'Λε Μαν','BGS':'Μπούργος','TRT':'Ντερτόνα','RTK':'Ροστόκ','LJU':'Τσεντεβίτα'}
+ECG={'ARI':'Άρης','JER':'Χάποελ Ιερουσαλήμ','RIG':'Ρίγα','LEM':'Λε Μαν','BGS':'Μπούργος','TRT':'Ντερτόνα','RTK':'Ρόστοκ','LJU':'Τσεντεβίτα'}
 GBN=[('Aris','Άρης'),('AEK','ΑΕΚ'),('ΒΙΚΟΣ','Βίκος Ιωαννίνων'),('Vikos','Βίκος Ιωαννίνων'),('Doxa','Δόξα Λευκάδας'),('DOXA','Δόξα Λευκάδας'),('Δόξα','Δόξα Λευκάδας'),('Iraklis','Ηρακλής'),('Karditsa','Καρδίτσα'),('Kolossos','Κολοσσός Ρόδου'),('Maroussi','Μαρούσι'),('Mykonos','Μύκονος'),('Olympiacos','Ολυμπιακός'),('PAOK','ΠΑΟΚ'),('Panathinaikos','Παναθηναϊκός'),('Peristeri','Περιστέρι'),('Promitheas','Προμηθέας Πατρών')]
 def fin(K,g):
     out={}
