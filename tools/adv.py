@@ -1,9 +1,11 @@
 # usage: python3 adv.py data.json  -> adds g.shots and g.lu to games missing them (validated), prints report
 import json,sys,math,collections,urllib.request
-ECN={'JOVIC, STEFAN':'Γιόβιτς','ANTETOKOUNMPO, KOSTAS':'Κ. Αντετοκούνμπο','ANTETOKOUNMPO, THANASIS':'Θ. Αντετοκούνμπο','BIRCH, KHEM':'Μπιρτς','CHARALAMPOPOULOS, VASILIS':'Χαραλαμπόπουλος','DIMITRIJEVIC, NENO':'Ντιμιτρίεβιτς','LIDDELL, E.J':'Λίντελ','MITROU - LONG, ELIJAH':'Μήτρου-Λονγκ','MOKOKA, ADAM':'Μοκόκα','MORGAN, MATTHEW':'Μόργκαν','ROBINSON - EARL, JEREMIAH':'Ρόμπινσον-Ερλ','TOLIOPOULOS, VASSILIS':'Τολιόπουλος','BOCHORIDIS, ELEFTHERIOS':'Μποχωρίδης','CHATZILAMPROU, CHRYSOSTOMOS':'Χατζηλάμπρου'}
+ECN={'POULIANITIS, STYLIANOS':'Πουλιανίτης','JOVIC, STEFAN':'Γιόβιτς','ANTETOKOUNMPO, KOSTAS':'Κ. Αντετοκούνμπο','ANTETOKOUNMPO, THANASIS':'Θ. Αντετοκούνμπο','BIRCH, KHEM':'Μπιρτς','CHARALAMPOPOULOS, VASILIS':'Χαραλαμπόπουλος','DIMITRIJEVIC, NENO':'Ντιμιτρίεβιτς','LIDDELL, E.J':'Λίντελ','MITROU - LONG, ELIJAH':'Μήτρου-Λονγκ','MOKOKA, ADAM':'Μοκόκα','MORGAN, MATTHEW':'Μόργκαν','ROBINSON - EARL, JEREMIAH':'Ρόμπινσον-Ερλ','TOLIOPOULOS, VASSILIS':'Τολιόπουλος','BOCHORIDIS, ELEFTHERIOS':'Μποχωρίδης','CHATZILAMPROU, CHRYSOSTOMOS':'Χατζηλάμπρου'}
 FBN={'9':'Γιόβιτς','2':'Πουλιανίτης','8':'Μήτρου-Λονγκ','15':'Ρόμπινσον-Ερλ','4':'Τολιόπουλος','12':'Ντιμιτρίεβιτς','3':'Μποχωρίδης','13':'Μόργκαν','16':'Λίντελ','1':'Χαραλαμπόπουλος','10':'Κ. Αντετοκούνμπο','6':'Θ. Αντετοκούνμπο','5':'Μπιρτς','14':'Μοκόκα','11':'Χατζηλάμπρου'}
 def get(u): return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'curl/8.5.0','Accept':'application/json'}),timeout=40))
-def secs(t): m,s=t.split(':')[:2]; return int(m)*60+int(s)
+def secs(t):
+    if ':' not in t: return int(float(t.replace('?','0') or 0))
+    m,s=t.split(':')[:2]; return int(m)*60+int(s)
 def build(g):
     box=g['players']; idx={p['name']:i for i,p in enumerate(box)}; shots=[]; ev=[]; F=A=0; firstsub={}; prob=[]
     nper=max(4,len((g.get('q') or {}).get('for',[0]*4)))

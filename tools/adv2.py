@@ -1,7 +1,9 @@
 # usage: python3 adv2.py data.json -> adds g.src (πηγές πόντων), g.flow (ροή σκορ), g.opp_top (κορυφαίοι αντίπαλοι) όπου λείπουν
 import json,sys,urllib.request
 def get(u): return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'curl/8.5.0','Accept':'application/json'}),timeout=40))
-def secs(t): m,s=t.split(':')[:2]; return int(m)*60+int(s)
+def secs(t):
+    if ':' not in t: return int(float(t.replace('?','0') or 0))
+    m,s=t.split(':')[:2]; return int(m)*60+int(s)
 def pir(s): return s['pts']+s['reb']+s['ast']+s['stl']+s['blk']+s['fd']-((s['a2']-s['m2'])+(s['a3']-s['m3'])+(s['fa']-s['fm'])+s['to']+s['ba']+s['pf'])
 def title(n):
     if ',' in n: last,first=[x.strip() for x in n.split(',',1)]; n=first+' '+last
