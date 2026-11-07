@@ -555,11 +555,12 @@ thead th:last-child{border-top-right-radius:8px}
 .pl-tile.hl span{color:var(--gold-ink)}
 .pl-h{font-size:20px;font-weight:800;margin:18px 0 2px}
 .pl-sub{color:var(--muted);font-size:13px;margin:0 0 8px}
-.pl-trend{display:flex;gap:6px;align-items:flex-end;height:110px;border-bottom:1px solid var(--line);padding-top:16px;overflow-x:auto}
+.pl-tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pl-trend{display:flex;gap:6px;align-items:flex-end;height:110px;border-bottom:1px solid var(--line);padding-top:16px;min-width:100%;width:max-content}
 .pl-bar{flex:1 0 34px;max-width:56px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px}
 .pl-bar i{display:block;width:70%;border-radius:4px 4px 0 0;min-height:3px}
 .pl-bar em{font-style:normal;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
-.pl-lbl{display:flex;gap:6px;overflow-x:hidden}
+.pl-lbl{display:flex;gap:6px;min-width:100%;width:max-content}
 .pl-lbl span{flex:1 0 34px;max-width:56px;text-align:center;font-size:10px;color:var(--muted);line-height:1.2;padding-top:3px}
 .gl-table th,.gl-table td{padding:8px 6px;font-size:13.5px}
 .gl-table thead th.hl{background:var(--gold);color:var(--gold-ink)}
@@ -1870,8 +1871,9 @@ if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){s.remove();retu
     // trend
     const vals=rows.map(r=>pir(r.p)), mx=Math.max(1,...vals.map(Math.abs));
     const ab=o=>o.normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().slice(0,3);
-    document.getElementById('pl-trend').innerHTML='<div class="pl-trend">'+rows.map((r,i)=>{const v=vals[i]; return '<div class="pl-bar" title="'+esc(r.g.label)+' · '+esc(r.g.opp)+': PIR '+v+'"><em>'+v+'</em><i style="height:'+Math.max(3,Math.round(Math.abs(v)/mx*80))+'%;background:'+col(v)+'"></i></div>';}).join('')+'</div>'+
-      '<div class="pl-lbl">'+rows.map(r=>'<span>'+(r.g.home?'':'@')+esc(ab(r.g.opp))+'<br>'+dshort(r.g.date)+'</span>').join('')+'</div>';
+    document.getElementById('pl-trend').innerHTML='<div class="pl-tw"><div class="pl-trend">'+rows.map((r,i)=>{const v=vals[i]; return '<div class="pl-bar" title="'+esc(r.g.label)+' · '+esc(r.g.opp)+': PIR '+v+'"><em>'+v+'</em><i style="height:'+Math.max(3,Math.round(Math.abs(v)/mx*80))+'%;background:'+col(v)+'"></i></div>';}).join('')+'</div>'+
+      '<div class="pl-lbl">'+rows.map(r=>'<span>'+(r.g.home?'':'@')+esc(ab(r.g.opp))+'<br>'+dshort(r.g.date)+'</span>').join('')+'</div></div>';
+    {const tw=document.querySelector('#pl-trend .pl-tw'); if(tw) requestAnimationFrame(()=>{tw.scrollLeft=tw.scrollWidth;});}
     // highs
     const hi=(k,l,f)=>{let b=null; rows.forEach(r=>{const v=f?f(r.p):r.p[k]; if(!b||v>b.v) b={v,r};}); return b?'<span class="top"><strong>'+b.v+'</strong> '+l+' <span class="mins">'+(b.r.g.home?'vs ':'@ ')+esc(b.r.g.opp)+' · '+dshort(b.r.g.date)+'</span></span>':'';};
     document.getElementById('pl-highs').innerHTML=hi('pir','PIR',pir)+hi('pts','πόντοι')+hi('reb','ριμπάουντ')+hi('ast','ασίστ')+hi('pm','+/−');
