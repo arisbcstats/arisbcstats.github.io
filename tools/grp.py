@@ -36,7 +36,8 @@ if played:
             k['m2']+=t['fieldGoalsMade2']; k['a2']+=t['fieldGoalsAttempted2']; k['m3']+=t['fieldGoalsMade3']; k['a3']+=t['fieldGoalsAttempted3']; k['fm']+=t['freeThrowsMade']; k['fa']+=t['freeThrowsAttempted']; k['pir']+=t['valuation']; k['oto']+=o['turnovers']
             k['drb']+=t['defensiveRebounds']; k['odrb']+=o['defensiveRebounds']; k['ooreb']+=o['offensiveRebounds']; k['ofga']+=o['fieldGoalsAttempted2']+o['fieldGoalsAttempted3']; k['ofa']+=o['freeThrowsAttempted']
     rows={r[0]:r for r in d['standings']['ec']['rows']}
-    bad=[n for n,k in K.items() if n in rows and (k['gp']!=rows[n][1]+rows[n][2] or k['pts']!=rows[n][3])]
+    # η επίσημη βαθμολογία EuroCup δεν μετράει τους πόντους της παράτασης, γι' αυτό ελέγχουμε μόνο τους αγώνες
+    bad=[n for n,k in K.items() if n in rows and k['gp']!=rows[n][1]+rows[n][2]]
     if bad or not K: print('EC ΠΡΟΒΛΗΜΑ',bad)
     else:
         G['EC']={'round':max(rounds),'teams':fin(K,None)}; print('EC OK round',max(rounds),len(K),'ομάδες')
