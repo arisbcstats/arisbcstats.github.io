@@ -1,3 +1,4 @@
+import re
 # usage: python3 adv.py data.json  -> adds g.shots and g.lu to games missing them (validated), prints report
 import json,sys,math,collections,urllib.request
 ECN={'POULIANITIS, STYLIANOS':'Πουλιανίτης','JOVIC, STEFAN':'Γιόβιτς','ANTETOKOUNMPO, KOSTAS':'Κ. Αντετοκούνμπο','ANTETOKOUNMPO, THANASIS':'Θ. Αντετοκούνμπο','BIRCH, KHEM':'Μπιρτς','CHARALAMPOPOULOS, VASILIS':'Χαραλαμπόπουλος','DIMITRIJEVIC, NENO':'Ντιμιτρίεβιτς','LIDDELL, E.J':'Λίντελ','MITROU - LONG, ELIJAH':'Μήτρου-Λονγκ','MOKOKA, ADAM':'Μοκόκα','MORGAN, MATTHEW':'Μόργκαν','ROBINSON - EARL, JEREMIAH':'Ρόμπινσον-Ερλ','TOLIOPOULOS, VASSILIS':'Τολιόπουλος','BOCHORIDIS, ELEFTHERIOS':'Μποχωρίδης','CHATZILAMPROU, CHRYSOSTOMOS':'Χατζηλάμπρου'}
@@ -16,9 +17,12 @@ def build(g):
                 shots.append([idx[ECN[r['PLAYER']]],r['COORD_X'],r['COORD_Y'],int(r['ID_ACTION'].endswith('M')),int(r['ID_ACTION'][0])])
         b=get(f'https://live.euroleague.net/api/PlayByPlay?gamecode={code}&seasoncode=U2026'); isA=b['CodeTeamA'].strip()=='ARI'
         for pi,q in enumerate(('FirstQuarter','SecondQuarter','ThirdQuarter','ForthQuarter','ExtraTime')):
+            per=pi+1; plen=600 if per<=4 else 300; rem=plen
             for e in (b.get(q) or []):
                 if not e['MARKERTIME']: continue
-                per=pi+1; plen=600 if per<=4 else 300; T=600*min(per-1,4)+(plen-secs(e['MARKERTIME']))
+                # κάποιες φάσεις έχουν λάθος χρόνο (π.χ. '04.2', '14.?' = χρόνος επίθεσης): κρατάμε τον χρόνο της προηγούμενης φάσης
+                if re.fullmatch(r'\d\d:\d\d',e['MARKERTIME']): rem=secs(e['MARKERTIME'])
+                T=600*min(per-1,4)+(plen-rem)
                 if e['POINTS_A'] is not None or e['POINTS_B'] is not None:
                     pa=e['POINTS_A'] if e['POINTS_A'] is not None else (F if isA else A); pb=e['POINTS_B'] if e['POINTS_B'] is not None else (A if isA else F)
                     F,A=(pa,pb) if isA else (pb,pa); ev.append((T,'S',None,F,A))
@@ -56,8 +60,11 @@ def build(g):
         if k=='IN': on.add(n)
         elif k=='OUT': on.discard(n)
     flush(max(2400+300*(nper-4),ev[-1][0]),ev[-1][3],ev[-1][4])
-    for p in box:
-        if p['sec'] and (abs(ps[p['name']]-p['sec'])>3 or pm[p['name']]!=p['pm']): prob.append(f"lineup {p['name']} {ps[p['name']]}s/{p['sec']}s pm {pm[p['name']]}/{p['pm']}")
+    bad=[p for p in box if p['sec'] and (abs(ps[p['name']]-p['sec'])>3 or pm[p['name']]!=p['pm'])]
+    # αν το +/- ταιριάζει σε όλους και οι διαφορές λεπτών αλληλοαναιρούνται (μία αλλαγή με λάθος χρόνο στο επίσημο box score), δεχόμαστε τις πεντάδες
+    if bad and all(pm[p['name']]==p['pm'] for p in box if p['sec']) and sum(ps[p['name']]-p['sec'] for p in bad)==0 and all(abs(ps[p['name']]-p['sec'])<=90 for p in bad):
+        print(g['id'],'σημείωση: διαφορά λεπτών στο επίσημο box score',[(p['name'],ps[p['name']]-p['sec']) for p in bad]); bad=[]
+    for p in bad: prob.append(f"lineup {p['name']} {ps[p['name']]}s/{p['sec']}s pm {pm[p['name']]}/{p['pm']}")
     return shots,[[list(k),*v] for k,v in agg.items()],prob
 d=json.load(open(sys.argv[1]))
 for g in d['games']:

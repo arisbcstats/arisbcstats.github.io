@@ -1,7 +1,13 @@
-import json,sys,collections,urllib.request,concurrent.futures as cf
+import json,sys,collections,urllib.request,urllib.error,concurrent.futures as cf
 def get(u):
-    try: return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'curl/8.5.0','Accept':'application/json'}),timeout=40))
-    except Exception: return None
+    # το API επιστρέφει κάποιες φορές κενή απάντηση, γι' αυτό ξαναδοκιμάζουμε
+    for i in range(6):
+        try: return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'curl/8.5.0','Accept':'application/json'}),timeout=40))
+        except urllib.error.HTTPError as e:
+            if e.code==404: return None
+        except Exception: pass
+        __import__('time').sleep(1+i)
+    return None
 ECG={'ARI':'Άρης','JER':'Χάποελ Ιερουσαλήμ','RIG':'Ρίγα','LEM':'Λε Μαν','BGS':'Μπούργος','TRT':'Ντερτόνα','RTK':'Ρόστοκ','LJU':'Τσεντεβίτα'}
 GBN=[('Aris','Άρης'),('AEK','ΑΕΚ'),('ΒΙΚΟΣ','Βίκος Ιωαννίνων'),('Vikos','Βίκος Ιωαννίνων'),('Doxa','Δόξα Λευκάδας'),('DOXA','Δόξα Λευκάδας'),('Δόξα','Δόξα Λευκάδας'),('Iraklis','Ηρακλής'),('Karditsa','Καρδίτσα'),('Kolossos','Κολοσσός Ρόδου'),('Maroussi','Μαρούσι'),('Mykonos','Μύκονος'),('Olympiacos','Ολυμπιακός'),('PAOK','ΠΑΟΚ'),('Panathinaikos','Παναθηναϊκός'),('Peristeri','Περιστέρι'),('Promitheas','Προμηθέας Πατρών')]
 def fin(K,g):
@@ -21,7 +27,7 @@ played=[g for g in (ag or {}).get('data',[]) if g.get('played')]
 if played:
     grp=played[-1]['group']['name']; rounds=sorted({g['round'] for g in played if g['group']['name']==grp})
     codes=[c for r in rounds for c in range(16*(r-1)+1,16*r+1)]
-    with cf.ThreadPoolExecutor(8) as ex: hdr=list(ex.map(lambda c:(c,get(f'https://api-live.euroleague.net/v2/competitions/U/seasons/U2026/games/{c}')),codes))
+    with cf.ThreadPoolExecutor(4) as ex: hdr=list(ex.map(lambda c:(c,get(f'https://api-live.euroleague.net/v2/competitions/U/seasons/U2026/games/{c}')),codes))
     allc=[c for c,h in hdr if h and h.get('played')]
     gc=[c for c in allc if dict(hdr)[c]['group']['name']==grp]
     with cf.ThreadPoolExecutor(6) as ex: sts=dict(zip(allc,ex.map(lambda c:get(f'https://api-live.euroleague.net/v3/competitions/U/seasons/U2026/games/{c}/stats'),allc)))
@@ -38,7 +44,7 @@ if played:
     rows={r[0]:r for r in d['standings']['ec']['rows']}
     # η επίσημη βαθμολογία EuroCup δεν μετράει τους πόντους της παράτασης, γι' αυτό ελέγχουμε μόνο τους αγώνες
     bad=[n for n,k in K.items() if n in rows and k['gp']!=rows[n][1]+rows[n][2]]
-    if bad or not K: print('EC ΠΡΟΒΛΗΜΑ',bad)
+    if bad or not K: print('EC ΠΡΟΒΛΗΜΑ',bad,[(n,K[n]['gp'],rows[n][1]+rows[n][2]) for n in bad])
     else:
         G['EC']={'round':max(rounds),'teams':fin(K,None)}; print('EC OK round',max(rounds),len(K),'ομάδες')
         if len(KA)>len(K) and 'Άρης' in KA: G['ECALL']={'round':max(rounds),'teams':fin(KA,None)}; print('EC σύνολο OK',len(KA),'ομάδες',len(allc),'αγώνες')

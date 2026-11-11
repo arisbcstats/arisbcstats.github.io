@@ -1,5 +1,5 @@
 # usage: python3 adv2.py data.json -> adds g.src (πηγές πόντων), g.flow (ροή σκορ), g.opp_top (κορυφαίοι αντίπαλοι) όπου λείπουν
-import json,sys,urllib.request
+import json,sys,re,urllib.request
 def get(u): return json.load(urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'curl/8.5.0','Accept':'application/json'}),timeout=40))
 def secs(t):
     if ':' not in t: return int(float(t.replace('?','0') or 0))
@@ -27,9 +27,13 @@ def build(g):
             src[side]={'tov':S('POINTS_OFF_TURNOVER'),'fb':S('FASTBREAK'),'sc':S('SECOND_CHANCE'),'paint':paint,'bench':int(bench)}
         isA=pbp['CodeTeamA'].strip()=='ARI'
         for pi,q in enumerate(('FirstQuarter','SecondQuarter','ThirdQuarter','ForthQuarter','ExtraTime')):
+            per=pi+1; plen=600 if per<=4 else 300; rem=plen
             for e in (pbp.get(q) or []):
-                if not e['MARKERTIME'] or (e['POINTS_A'] is None and e['POINTS_B'] is None): continue
-                per=pi+1; plen=600 if per<=4 else 300; T=600*min(per-1,4)+(plen-secs(e['MARKERTIME']))
+                if not e['MARKERTIME']: continue
+                # λάθος χρόνος (π.χ. '04.2', '23.?'): κρατάμε τον χρόνο της προηγούμενης φάσης
+                if re.fullmatch(r'\d\d:\d\d',e['MARKERTIME']): rem=secs(e['MARKERTIME'])
+                if e['POINTS_A'] is None and e['POINTS_B'] is None: continue
+                T=600*min(per-1,4)+(plen-rem)
                 pa=e['POINTS_A'] if e['POINTS_A'] is not None else (F if isA else A); pb=e['POINTS_B'] if e['POINTS_B'] is not None else (A if isA else F)
                 nF,nA=(pa,pb) if isA else (pb,pa)
                 if (nF,nA)!=(F,A): F,A=nF,nA; flow.append([T,F,A])
